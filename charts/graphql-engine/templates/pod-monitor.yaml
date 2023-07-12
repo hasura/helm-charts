@@ -1,0 +1,33 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- $appName := include "common.name" . -}}
+{{- $namespace := include "common.namespace" . -}}
+{{- if (.Values.podMonitor).enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ $appName }}-monitor
+  namespace: {{ $namespace }}
+  labels:
+    release: {{ .Release.Name }}
+spec:
+  jobLabel: {{ $appName }}
+  namespaceSelector:
+    matchNames:
+      - {{ $namespace }}
+  podMetricsEndpoints:
+    - interval: {{ .Values.podMonitor.interval }}
+      path: /v1/metrics
+      port: http
+      scrapeTimeout: {{ .Values.podMonitor.scrapeTimeout }}
+      {{ if (.Values.secret).metricsSecret }}
+      bearerTokenSecret:
+        key: HASURA_GRAPHQL_METRICS_SECRET
+        name: {{ template "common.secretsName" $ }}
+      {{ end }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+{{- end }}

@@ -1,0 +1,28 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- $appName := include "common.name" . -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $appName }}
+  namespace: {{ template "common.namespace" . }}
+  annotations:
+  {{- if or (.Values.service).annotations (.Values.service).additionalAnnotations}}
+    {{- toYaml (coalesce .Values.service.annotations .Values.service.additionalAnnotations) . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+  {{- with (.Values.service).labels }}
+    {{- toYaml .  | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    app: {{ $appName }}
+  ports:
+  - name: http
+    port: {{ coalesce .Values.config.port 8080 }}
+    targetPort: {{ coalesce .Values.config.port 8080 }}
+  type: {{ coalesce (.Values.service).type "ClusterIP" }}
+

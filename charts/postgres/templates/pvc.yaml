@@ -1,0 +1,44 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+---
+{{- if and (.Values.persistence).enabled (not (.Values.persistence).existingClaim) }}
+{{- $appName := include "postgres.name" . -}}
+{{- with .Values.persistence }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $appName }}-data
+  namespace: {{ template "common.namespace" $ }}
+  labels:
+    app: {{ $appName }}
+  {{- if .labels }}
+    {{- toYaml .labels | nindent 4 }}
+  {{- end }}
+  annotations:
+  {{- if .annotations }}
+    {{- toYaml .annotations | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+  {{- if .accessModes }}
+    {{- toYaml .accessModes | nindent 4 }}
+  {{- else }}
+    - ReadWriteOnce
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .size | quote }}
+  {{- if .storageClass }}        
+  storageClassName: {{ .storageClass | quote }}
+  {{- end }}  
+  {{- if .dataSource }}
+  dataSource: 
+    {{- toYaml .dataSource | nindent 4 }}
+  {{- end }}  
+  {{- if .selector }}
+  selector: 
+    {{- toYaml .selector | nindent 4 }}
+  {{- end }}
+{{- end }}  
+{{- end }}

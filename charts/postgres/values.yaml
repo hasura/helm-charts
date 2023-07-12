@@ -1,0 +1,185 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+## Provide a name in place of graphql-engine for `app:` labels
+##
+nameOverride: ""
+
+## Override the deployment namespace
+##
+namespaceOverride: ""
+
+## Labels for postgres deployment
+##
+labels: {}
+
+## PostgreSQL image repository and tag configuration
+##
+image:
+  repository: postgres
+  tag: "15"
+
+  ## Specify a imagePullPolicy
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## Example:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## Custom execution command
+##
+command: []
+
+## Custom arguments
+##
+args: []
+
+auth:
+  ## Name for a custom user to create
+  ##
+  username: hasura
+
+  ## Password for the custom user to create.
+  ##
+  password: postgrespassword
+
+  ## Name for a custom database to create
+  ##
+  database: hasura
+
+## PostgreSQL Primary persistence configuration
+##
+persistence:
+  ## Enable PostgreSQL Primary data persistence using PVC
+  ##
+  enabled: true
+
+  ## Name of an existing PVC to use
+  ##
+  existingClaim: ""
+
+  ## PVC Storage Class for PostgreSQL Primary data volume
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  storageClass: ""
+
+  ## PVC Access Mode for PostgreSQL volume
+  ##
+  accessModes:
+    - ReadWriteOnce
+
+  ## PVC Storage Request for PostgreSQL volume
+  ##
+  size: 10Gi
+
+  ## Annotations for the PVC
+  ##
+  annotations: {}
+
+  ## Labels for the PVC
+  ##
+  labels: {}
+
+  ## Selector to match an existing Persistent Volume (this value is evaluated as a template)
+  ## selector:
+  ##   matchLabels:
+  ##     app: my-app
+  ##
+  selector: {}
+
+  ## Custom PVC data source
+  ##
+  dataSource: {}
+
+## Initialization scripts configuration
+##
+initdb:
+  ## Dictionary of initdb scripts
+  ## Specify dictionary of scripts to be run at first boot
+  ## e.g:
+  ## scripts:
+  ##   my_init_script.sh: |
+  ##      #!/bin/sh
+  ##      echo "Do something."
+  ##
+  scripts: {}
+
+## Additional annotations
+##
+annotations: {}
+
+## Assign custom affinity rules to the prometheus instance
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+##
+affinity: {}
+
+## Define which Nodes the Pods are scheduled on.
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## Tolerations for use with node taints
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: {}
+
+## Define privilege and access control settings for a Pod or Container
+##
+securityContext: {}
+
+## Additional initialization containers
+##
+initContainers: []
+
+## Extra containers
+##
+extraContainers: []
+
+## Optionally specify extra list of additional volumes for the PostgreSQL pod
+##
+extraVolumes: []
+
+## Optionally specify extra list of additional volumeMounts for the PostgreSQL container
+##
+extraVolumeMounts: []
+
+## Resource requests and limits of deployment pods
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## Example
+## requests:
+##   cpu: 250m
+##   memory: 256Mi
+##
+resources: {}
+
+## Service account for Postgres to use.
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+##
+serviceAccount:
+  enabled: false
+  name: ""
+
+## Service configuration for graphql-engine service
+##
+service:
+  annotations: {}
+  labels: {}
+  type: ClusterIP
+
+## Enable heath check configuration
+##
+healthChecks:
+  enabled: false
+  readinessProbe: {}
+  livenessProbe: {}

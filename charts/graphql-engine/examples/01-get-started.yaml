@@ -1,0 +1,23 @@
+config:
+  ## Do we use the Postgres connection for metadata storage only?
+  ## - If true: HASURA_GRAPHQL_METADATA_DATABASE_URL=<database_url>
+  ## - If false: HASURA_GRAPHQL_DATABASE_URL=<database_url>
+  ## Only takes effect when @secret.metadataDbUrl isn't set
+  ##
+  metadataOnly: false
+
+secret:
+  adminSecret: "hasura"
+  eeLicenseKey: ""
+
+postgres:
+  enabled: true
+
+  auth:
+    username: hasura
+    password: postgrespassword
+    database: hasura
+
+  persistence:
+    enabled: true
+    size: 10Gi

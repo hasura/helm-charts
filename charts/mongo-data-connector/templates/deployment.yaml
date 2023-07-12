@@ -1,0 +1,104 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- $appName := include "mdc.name" . -}}
+{{- $imagePullSecret := coalesce .Values.image.pullSecrets (.Values.global).imagePullSecrets -}}
+---
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  namespace: {{ template "common.namespace" . }}
+  labels:
+    {{- include "mdc.labels" . | nindent 4 }}
+spec:
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+{{- end }}
+{{- if .Values.strategy }}
+  strategy:
+    {{- toYaml .Values.strategy | nindent 4 }}
+{{- end }}
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      annotations:
+      {{- if not .Values.disableAnnotationTimestamp }}
+        deployment-timestamp: "{{ date "20060102150405" now }}"
+      {{- end }}
+      {{- if .Values.annotations }}
+        {{- .Values.annotations | nindent 8 }}
+      {{- end }}
+      labels:
+      {{- include "mdc.labels" . | nindent 8 }}
+    spec:
+    {{- if .Values.securityContext }}
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if ((.Values.serviceAccount).enabled) }}
+      serviceAccountName: {{ coalesce .Values.serviceAccount.name $appName }}
+    {{- end }}
+    {{- if $imagePullSecret }}
+      imagePullSecrets:
+        {{- toYaml $imagePullSecret | nindent 8 }}
+    {{- end }}
+    {{- with .Values.initContainers }}
+      initContainers:
+          {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        {{- with .Values.extraContainers }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        - name: mongo-data-connector
+          image: {{ template "common.image" (dict "Values" $.Values "repository" .Values.image.repository "tag" .Values.image.tag) }}
+          imagePullPolicy: {{ coalesce .Values.image.pullPolicy }}
+        {{- if .Values.command }}
+          command:
+          {{- toYaml .Values.command | nindent 12 }}
+        {{- end }}
+        {{- if .Values.args }}
+          args:
+          {{- toYaml .Values.args | nindent 12 }}
+        {{- end }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+        {{- if (.Values.healthChecks).enabled }}
+          readinessProbe:
+            {{- toYaml .Values.healthChecks.readinessProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.healthChecks.livenessProbe | nindent 12 }}
+        {{- end }}
+        {{- if .Values.extraVolumeMounts }}
+          volumeMounts:
+            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+        {{- end }}
+        {{- with .Values.extraEnvs }}
+          env:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 }}
+    {{- end }}

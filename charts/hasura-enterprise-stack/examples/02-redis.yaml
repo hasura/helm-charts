@@ -1,0 +1,9 @@
+global:
+  redis:
+    enabled: true
+    password: redispassword
+
+graphql-engine:
+  secret:
+    adminSecret: "hasura"
+    eeLicenseKey: "<license-key>"

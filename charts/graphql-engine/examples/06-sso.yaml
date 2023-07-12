@@ -1,0 +1,17 @@
+secret:
+  adminSecret: "hasura"
+  eeLicenseKey: "<license-key>"
+
+  ## GraphQL Engine Enterprise supports SSO through OAuth 2.0 / OpenID Connect out of the box
+  ## For other protocols, you need Dex to ingrate with other Identity Providers
+  ##
+  ssoProviders:
+    - client_id: "<oauth_client_id>"
+      name: "<display_name>"
+      authorization_url: "<login_url>"
+      request_token_url: "<request_token_url>"
+      scope: "openid offline_access"
+      admin_roles: []
+      jwt_secret:
+        type: "RS256"
+        issuer: "<issuer>"

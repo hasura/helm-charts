@@ -1,0 +1,69 @@
+graphql-engine:
+  ingress:
+    enabled: true
+    annotations: {}
+    hostName: "hasura.example.local"
+
+  secret:
+    adminSecret: "hasura"
+    eeLicenseKey: "<license-key>"
+
+    ## GraphQL Engine Enterprise supports SSO through OAuth 2.0 / OpenID Connect out of the box
+    ## For other protocols, you need Dex to ingrate with other Identity Providers
+    ##
+    ssoProviders:
+      - client_id: hasura-ee
+        name: "Dex Login"
+        authorization_url: "http://dex.example.local/auth"
+        request_token_url: "http://dex.example.local/token"
+        scope: "openid offline_access groups"
+        jwt_secret:
+          type: "RS256"
+
+          ## If graphql-engine pods can't resolve the public DNS of Dex,
+          ## You can use the internal service DNS instead
+          ## Default: http://{{ .Release.Name }}-dex:5556/keys
+          ##
+          ## example: "http://dex.example.local/keys"
+          ##
+          jwk_url: "http://hge-dex:5556/keys"
+
+          issuer: "http://dex.example.local"
+          claims_map:
+            "x-hasura-allowed-roles":
+              path: "$.groups"
+            "x-hasura-default-role":
+              path: "$.groups[0]"
+
+## See Enable SSO pages for more configurations and guides of popular protocols/IdPs
+## https://hasura.io/docs/latest/enterprise/sso/index/
+##
+dex:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts:
+      - host: dex.example.local
+        paths:
+          - path: /
+            pathType: Prefix
+  config:
+    issuer: http://dex.example.local
+    storage:
+      type: memory
+    web:
+      http: 0.0.0.0:5556
+      allowedOrigins: ["*"]
+    staticClients:
+      - id: hasura-ee
+        redirectURIs:
+          - "http://hasura.example.local/console/oauth2/callback"
+        name: "Hasura App"
+        public: true
+    connectors:
+      ## Use the mock callback mode for development only
+      ## Remove this mode in production environment
+      ##
+      - type: mockCallback
+        id: mock
+        name: Mock

@@ -1,0 +1,50 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- $kubeTargetVersion := coalesce .Values.global.kubeVersion .Capabilities.KubeVersion.GitVersion }}
+{{- $serviceName := coalesce (.Values.ingress).serviceName (include "common.name" .) -}}
+{{- $servicePort := coalesce (.Values.ingress).servicePort (.Values.config).port 8080 -}}
+{{- if .Values.ingress.enabled -}}
+---
+{{- if semverCompare ">=1.19-0" $kubeTargetVersion }}
+apiVersion: networking.k8s.io/v1
+{{- else }}
+apiVersion: networking.k8s.io/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $serviceName }}
+  namespace: {{ template "common.namespace" . }}
+  annotations:
+    {{- toYaml  .Values.ingress.annotations | nindent 4 }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+{{- if and (semverCompare ">=1.18-0" $kubeTargetVersion) (.Values.ingress).ingressClassName }}
+  ingressClassName: {{ default (.Values.ingress).ingressClassName }}
+{{- end  }}
+  rules:
+  - host: {{ .Values.ingress.hostName }}
+{{- if semverCompare ">=1.19-0" $kubeTargetVersion }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ $serviceName }}
+            port:
+              number: {{ $servicePort }}
+        pathType: ImplementationSpecific
+        path: /{{ .Values.ingress.path }}
+{{- else }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $serviceName }}
+          servicePort: {{ $servicePort }}
+        path: /{{ tpl .Values.ingress.path . }}
+{{- end }}
+{{- if .Values.ingress.tls }}
+  tls:
+  {{- toYaml .Values.ingress.tls | nindent 4 }}
+{{- end }}
+{{- end }}

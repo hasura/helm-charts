@@ -1,0 +1,18 @@
+global:
+  connector:
+    ## Enable the graphql data connector service
+    ## You can connect to the internal service endpoint http://{{ .Release.Name }}-graphql-data-connector:8081
+    ##
+    graphql:
+      enabled: true
+
+    ## Enable the mongo data connector service
+    ## You can connect to the internal service endpoint http://{{ .Release.Name }}-mongo-data-connector:3000
+    ##
+    mongo:
+      enabled: true
+
+graphql-engine:
+  secret:
+    adminSecret: "hasura"
+    eeLicenseKey: "<license-key>"

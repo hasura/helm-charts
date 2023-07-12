@@ -1,0 +1,441 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+global:
+  ## Provide the naming prefix
+  ## @default: {{ .Release.Name }}
+  ##
+  prefixOverride: ""
+
+  ## Global image registry to use if it needs to be overriden for some specific use cases (e.g local registries, custom images, ...)
+  ##
+  imageRegistry: ""
+
+  ## Reference to one or more secrets to be used when pulling images
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+
+## Override Kubernetes version
+##
+kubeVersion: ""
+
+## Provide a name in place of graphql-engine for `app:` labels
+##
+nameOverride: ""
+
+## Override the deployment namespace
+##
+namespaceOverride: ""
+
+## Labels for graphql-engine deployment
+##
+labels: {}
+
+## The image repository of graphql-engine
+##
+image:
+  repository: hasura/graphql-engine
+  tag: v2.29.0
+  ## Specify a imagePullPolicy
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## Example:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## Custom execution command
+##
+command: []
+
+## Custom arguments
+##
+args: []
+
+## Number of container replicas
+##
+replicas: "1"
+
+## Enable heath check configuration
+##
+healthChecks:
+  enabled: true
+  readinessProbe:
+    httpGet:
+      path: /healthz
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+    successThreshold: 1
+
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+    successThreshold: 1
+
+## Service account for graphql-engine to use.
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+##
+serviceAccount:
+  enabled: false
+  name: ""
+
+## Additional annotations
+##
+annotations: {}
+
+## Disable the deploy timestamp annotation to skip force rollout
+##
+disableAnnotationTimestamp: false
+
+## The deployment strategy to use to replace existing pods with new ones.
+## DeploymentStrategy describes how to replace existing pods with new ones.
+strategy: {}
+
+## Assign custom affinity rules to the prometheus instance
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+##
+affinity: {}
+
+## Define which Nodes the Pods are scheduled on.
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## Tolerations for use with node taints
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: {}
+
+## Define privilege and access control settings for a Pod or Container
+##
+securityContext: {}
+
+## Additional initialization containers
+##
+initContainers: []
+
+## Extra containers
+##
+extraContainers: []
+
+## Extra volume mounts
+##
+extraVolumeMounts: []
+
+## Enable autoscaling with HorizontalPodAutoscaler configuration
+## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+##
+autoscaling:
+  enabled: false
+
+  ## Minimum and maximum replicas that the deployment can be scaled
+  ##
+  minReplicas: 1
+  maxReplicas: 2
+
+  ## Configure separate scale-up and scale-down behaviors
+  ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configurable-scaling-behavior
+  ## Example:
+  ## scaleDown:
+  ##   stabilizationWindowSeconds: 300
+  ##   policies:
+  ##   - type: Percent
+  ##     value: 100
+  ##     periodSeconds: 15
+  ## scaleUp:
+  ##   stabilizationWindowSeconds: 0
+  ##   policies:
+  ##   - type: Percent
+  ##     value: 100
+  ##     periodSeconds: 15
+  ##   - type: Pods
+  ##     value: 4
+  ##     periodSeconds: 15
+  ##   selectPolicy: Max
+  ##
+  behavior: {}
+
+  ## Configure autoscaling policies based on metrics
+  ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-resource-metrics
+  ## Example:
+  ## - type: Resource
+  ##   resource:
+  ##     name: cpu
+  ##     target:
+  ##       type: Utilization
+  ##       averageUtilization: 50
+  ##
+  metrics: []
+
+## Resource requests and limits of deployment pods
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## Example:
+## requests:
+##   cpu: 250m
+##   memory: 256Mi
+##
+resources: {}
+
+## Additional environment variables for the graphql-engine deployment
+## Ref: https://hasura.io/docs/latest/deployment/graphql-engine-flags/reference/
+##
+extraEnvs: {}
+
+## Additional environment variables for the graphql-engine deployment, using templates
+##
+extraEnvsTpl: ""
+
+## Service configuration for graphql-engine service
+##
+service:
+  annotations: {}
+  labels: {}
+  type: ClusterIP
+
+## Ingress configuration for graphql-engine service
+## ref https://kubernetes.io/docs/concepts/services-networking/ingress
+##
+ingress:
+  enabled: false
+
+  ## Optionally specify additional annotations to the ingress.
+  ## Example:
+  ## kubernetes.io/ingress.class: nginx
+  ## kubernetes.io/tls-acme: "true"
+  ##
+  annotations: {}
+
+  ## Ingress class name
+  ## https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class.
+  ##
+  ingressClassName: ""
+
+  ## The ingress host name for graphql-engine
+  ## https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class.
+  ##
+  hostName: ""
+
+  ## The path suffix, only set if you only want to expose specific api endpoints
+  ##
+  path: ""
+
+  ## The target service name
+  ## @default: graphql-engine
+  ##
+  serviceName: ""
+
+  ## The target service port
+  ## @default: http
+  ##
+  servicePort: ""
+
+  ## Ingress TLS configuration
+  ##
+  tls: {}
+
+## PodMonitor resource config for Prometheus
+podMonitor:
+  enabled: false
+
+  ## The monitor scrape interval
+  interval: 15s
+
+  ## The monitor scrape timeout
+  scrapeTimeout: 10s
+
+## GraphQL Engine configuration
+##
+config:
+  ## String to override the configmap name
+  ## @default: {{ .Release.Name }}-graphql-engine-configs
+  ##
+  name: ""
+
+  ## The http port of the graphql engine container
+  ##
+  port: 8080
+
+  ## Do we use the Postgres connection for metadata storage only?
+  ## - If true: HASURA_GRAPHQL_METADATA_DATABASE_URL=<database_url>
+  ## - If false: HASURA_GRAPHQL_DATABASE_URL=<database_url>
+  ## Only takes effect when @secret.metadataDbUrl isn't set
+  ##
+  metadataOnly: true
+
+  ## Optionally specify the authorization hook URL for GraphQL Engine pods
+  ##
+  authHook: ""
+
+  ## Optionally specify the HTTP method used by Hasura to make requests if you're using the webhook for authentication.
+  ## @default: GET
+  ##
+  authHookMode: "GET"
+
+  ## The role for unauthenticated (non-logged in) users
+  ## It only takes effect if graphql-engine doesn't use auth or uses the JWT auth mode
+  ## Ref: https://hasura.io/docs/latest/auth/authentication/unauthenticated-access/
+  ##
+  unauthorizedRole: ""
+
+  ## Enable the Hasura Console
+  ## @default: true
+  ##
+  enableConsole: true
+
+  ## List of domains, including scheme (http/https) and port, to allow CORS
+  ## @default: *
+  ##
+  corsDomains: "*"
+
+  ## Specify the dev mode for GraphQL requests, i.e. in case of errors, includes an internal key in the errors extensions of the response
+  ## @default: false
+  ##
+  devMode: false
+
+  ## Use whether Hasura CDN or the internal path for console assets
+  ## @default: false
+  ##
+  enableInternalConsoleAssets: false
+
+  ## List of enabled log types
+  ##
+  enabledLogTypes: ""
+
+  ## List of enabled APIs for graphql-engine
+  ##
+  # enabledApis: metadata,graphql,config,metrics
+
+  ## Host endpoints for Hasura Enterprise Classic to authorize with self-host Lux control plane
+  ##
+  lux:
+    proEndpoint: ""
+    authIssuer: ""
+    oauthJwkUrl: ""
+    oauthAuthorizationUrl: ""
+    oauthTokenUrl: ""
+    logSinkUrl: ""
+    validatePatUrl: ""
+    metricsUrl: ""
+
+    ## Disable sending observability logs to Lux (Enterprise Classic)
+    ##
+    disableLogSender: false
+
+  ## Extra configs that will be added to the configmap
+  ## Ref: https://hasura.io/docs/latest/deployment/graphql-engine-flags/reference/
+  ## Example:
+  ## HASURA_GRAPHQL_ADMIN_INTERNAL_ERRORS: "false"
+  ## HASURA_GRAPHQL_ENABLE_MAINTENANCE_MODE: "false"
+  ##
+  extraConfigs: {}
+
+## GraphQL Engine Secret configurations
+##
+secret:
+  ## Automatically generate a secret resource
+  ## If disabled, you need to create a secret manually yourself
+  ##
+  enabled: true
+
+  ## Specify your secret name (optional)
+  ## @default: <Release namespace>-secrets
+  ##
+  name: ""
+
+  ## The connection string of the metadata database
+  ## Use the default postgres service url if not set
+  ##
+  metadataDbUrl: ""
+
+  ## The admin secret of graphql-engine
+  ## @default: hasura
+  ##
+  adminSecret: "hasura"
+
+  ## You also can specify a list of admin secrets
+  ##
+  adminSecrets: []
+
+  ## The Prometheus metrics secret
+  ## If the value isn't empty the Prometheus metrics API will be automatically enabled
+  ##
+  metricsSecret: ""
+
+  ## Enable the Enterprise Edition with the license key
+  ## https://hasura.io/docs/latest/enterprise/upgrade-ce-to-ee/
+  ##
+  eeLicenseKey: ""
+
+  ## Enable the Enterprise Classic edition
+  ## Note: Pro Key is disabled if EE License key is set
+  ##
+  proKey: ""
+
+  ## This configuration enables Authentication using JWT
+  ## ref: https://hasura.io/docs/latest/auth/authentication/jwt/#configuring-jwt-mode
+  ## Example:
+  ## type: "RS256"
+  ## issuer: "<issuer>"
+  ##
+  jwtSecret: {}
+
+  ## You can configure GraphQL Engine with a list of JWT secrets. This enables you to authenticate with different JWT issuers.
+  ## https://hasura.io/docs/latest/security/multiple-jwt-secrets/
+  ## Example:
+  ## - type: "RS256"
+  ##   issuer: "<issuer>"
+  ##
+  jwtSecrets: []
+
+  ## The connection string to the redis database for caching
+  ##
+  redisUrl: ""
+
+  ## The connection string to the redis database for caching
+  ##
+  rateLimitRedisUrl: ""
+
+  ## Identity provider settings for console SSO login
+  ## Example:
+  ## - client_id: "<oauth_client_id>"
+  ##   name: "<display_name>"
+  ##   authorization_url: "<login_url>"
+  ##   request_token_url: "<request_token_url>"
+  ##   scope: "openid offline_access"
+  ##   admin_roles: []
+  ##   jwt_secret:
+  ##     type: "RS256"
+  ##     issuer: "<issuer>"
+  ##
+  ssoProviders: []
+
+  ## Extra secrets data for graphql-engine environment variables
+  ## These secrets will be mapped into both secret and container environment variables
+  ##
+  extraSecrets: {}
+
+## The main postgres database for metadata and data source connection
+## Disable the service if you use external Postgres clusters
+## see full values at https://github.com/hasura/helm-charts/blob/main/charts/postgres/values.yaml
+##
+##
+postgres:
+  enabled: true

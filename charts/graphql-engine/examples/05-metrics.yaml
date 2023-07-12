@@ -1,0 +1,12 @@
+config:
+  ## Add the metrics api to enable Prometheus metrics
+  ##
+  enabledApis: metadata,graphql,config,metrics
+
+secret:
+  adminSecret: "hasura"
+  eeLicenseKey: "<license-key>"
+
+  ## Set the Prometheus metrics secret to avoid anonymous requests
+  ##
+  metricsSecret: ""

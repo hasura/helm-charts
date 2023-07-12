@@ -1,0 +1,3 @@
+secret:
+  adminSecret: "hasura"
+  proKey: "<pro-key>"

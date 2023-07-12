@@ -1,0 +1,146 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- $appName := include "postgres.name" . -}}
+{{- $imagePullSecret := coalesce .Values.image.pullSecrets (.Values.global).imagePullSecrets -}}
+{{- with .Values }}
+---
+{{- if $.Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  namespace: {{ template "common.namespace" $ }}
+  labels:
+    app: {{ $appName }}
+  {{- if .labels }}
+    {{ toYaml .labels | nindent 4}}
+  {{- end }}
+spec:
+{{- if $.Capabilities.APIVersions.Has "apps/v1" }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+{{- end }}
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+      {{- if .annotations }}
+        {{- toYaml .annotations | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ $appName }}
+      {{- if .labels }}
+        {{ toYaml .labels | nindent 8 }}
+      {{- end }}
+    spec:
+    {{- if .securityContext }}
+      securityContext:
+        {{- toYaml .securityContext | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: postgres-data
+        {{- if and .persistence.enabled .persistence.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .persistence.existingClaim }}
+        {{- else if and .persistence.enabled }}  
+          persistentVolumeClaim:
+            claimName: {{ $appName }}-data
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+        {{- if (.initdb).scripts }}
+        - name: custom-init-scripts
+          configMap:
+            name: postgres-init-scripts
+        {{- end }}
+      {{- with .extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if ((.serviceAccount).enabled) }}
+      serviceAccountName: {{ coalesce .serviceAccount.name $appName }}
+    {{- end }}
+    {{- if $imagePullSecret }}
+      imagePullSecrets:
+        {{- toYaml $imagePullSecret | nindent 8 }}
+    {{- end }}
+      initContainers:
+      {{- with .initContainers }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        {{- with .extraContainers }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        - name: postgres
+          image: {{ template "common.image" (dict "Values" $.Values "repository" .image.repository "tag" .image.tag) }}
+          imagePullPolicy: {{ coalesce .image.pullPolicy "IfNotPresent" }}
+        {{- if .command }}
+          command:
+          {{- toYaml .command | nindent 12 }}
+        {{- end }}
+        {{- if .args }}
+          args:
+          {{- toYaml .args | nindent 12 }}
+        {{- end }}
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+        {{- if .healthChecks.enabled }}
+          readinessProbe:
+          {{- toYaml  .healthChecks.readinessProbe . | nindent 12 }}
+          livenessProbe:
+          {{- toYaml  .healthChecks.livenessProbe . | nindent 12 }}
+       {{- end }}
+          volumeMounts:       
+            - name: postgres-data
+              mountPath: "/var/lib/postgresql/data"
+          {{- if (.initdb).scripts }}
+            - name: custom-init-scripts
+              mountPath: /docker-entrypoint-initdb.d/
+          {{- end }}
+          {{- with .extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER
+                  name: {{ template "postgres.secretsName" $ }}
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_DB
+                  name: {{ template "postgres.secretsName" $ }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: {{ template "postgres.secretsName" $ }}
+      {{- if .resources }}
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+      {{- end }}
+    {{- with .nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 }}
+    {{- end }}
+{{- end }}

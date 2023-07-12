@@ -1,0 +1,29 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- $appName := include "postgres.name" . -}}
+{{- with .Values.service }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $appName }}
+  namespace: {{ template "common.namespace" $ }}
+  {{- if .annotations }}
+  annotations:
+    {{- toYaml .annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ $appName }}
+  {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    app: {{ $appName }}
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+  type: {{ coalesce .type "ClusterIP" }}
+{{- end }}

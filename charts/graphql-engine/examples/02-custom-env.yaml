@@ -1,0 +1,26 @@
+secret:
+  adminSecret: "hasura"
+  eeLicenseKey: ""
+
+  ## Extra secrets data for graphql-engine environment variables
+  ## These secrets will be mapped into both secret and container environment variables
+  ##
+  extraSecrets:
+    DATA_DATABASE_URL: postgres://hasura:postgrespassword@postgres:5432/hasura
+
+postgres:
+  enabled: true
+
+  auth:
+    username: hasura
+    password: postgrespassword
+    database: postgres
+
+  persistence:
+    enabled: true
+    size: 10Gi
+
+  initdb:
+    scripts:
+      create_db.sql: |
+        CREATE DATABASE hasura;

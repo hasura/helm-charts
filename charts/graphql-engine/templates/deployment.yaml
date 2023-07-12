@@ -1,0 +1,280 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- $appName := include "common.name" . -}}
+{{- $imagePullSecret := coalesce .Values.image.pullSecrets (.Values.global).imagePullSecrets -}}
+---
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  namespace: {{ template "common.namespace" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+{{- end }}
+{{- if .Values.strategy }}
+  strategy:
+    {{- toYaml .Values.strategy | nindent 4 }}
+{{- end }}
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      annotations:
+      {{- if not .Values.disableAnnotationTimestamp }}
+        deployment-timestamp: "{{ date "20060102150405" now }}"
+      {{- end }}
+      {{- if .Values.annotations }}
+        {{- .Values.annotations | nindent 8 }}
+      {{- end }}
+      labels:
+      {{- include "common.labels" . | nindent 8 }}
+    spec:
+    {{- if .Values.securityContext }}
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if ((.Values.serviceAccount).enabled) }}
+      serviceAccountName: {{ coalesce .Values.serviceAccount.name $appName }}
+    {{- end }}
+    {{- if $imagePullSecret }}
+      imagePullSecrets:
+        {{- toYaml $imagePullSecret | nindent 8 }}
+    {{- end }}
+    {{- with .Values.initContainers }}
+      initContainers:
+          {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        {{- with .Values.extraContainers }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        - name: graphql-engine
+          image: {{ template "common.image" (dict "Values" $.Values "repository" .Values.image.repository "tag" .Values.image.tag) }}
+          imagePullPolicy: {{ coalesce .Values.image.pullPolicy }}
+        {{- if .Values.command }}
+          command:
+          {{- toYaml .Values.command | nindent 12 }}
+        {{- end }}
+        {{- if .Values.args }}
+          args:
+          {{- toYaml .Values.args | nindent 12 }}
+        {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ coalesce .Values.config.port 8080 }}
+              protocol: TCP
+        {{- if (.Values.healthChecks).enabled }}
+          readinessProbe:
+            {{- toYaml .Values.healthChecks.readinessProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.healthChecks.livenessProbe | nindent 12 }}
+        {{- end }}
+        {{- if .Values.extraVolumeMounts }}
+          volumeMounts:
+            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+        {{- end }}
+          env:
+          {{- with .Values.config }}
+            - name: HASURA_GRAPHQL_ENABLE_CONSOLE
+              valueFrom:
+                configMapKeyRef:
+                  key: HASURA_GRAPHQL_ENABLE_CONSOLE
+                  name: {{ template "common.configMapName" $ }}
+            - name: HASURA_GRAPHQL_CORS_DOMAIN
+              value: {{ .corsDomains | quote }}
+            {{- if .devMode }}
+            - name: HASURA_GRAPHQL_DEV_MODE
+              value: {{ .devMode | quote }}
+            {{- end }}
+            {{- if .enabledLogTypes }}
+            - name: HASURA_GRAPHQL_ENABLED_LOG_TYPES
+              value: {{ .enabledLogTypes | quote }}
+            {{- end }}
+            {{- if .enableInternalConsoleAssets }}
+            - name: HASURA_GRAPHQL_CONSOLE_ASSETS_DIR
+              value: "/srv/console-assets"
+            {{- end }}
+            {{- if .authHook }}
+            - name: HASURA_GRAPHQL_AUTH_HOOK
+              value: {{ .authHook | quote }}
+            - name: HASURA_GRAPHQL_AUTH_HOOK_MODE
+              value: {{ .authHookMode | quote }}
+            {{- end }}
+            {{- if .unauthorizedRole }}
+            - name: HASURA_GRAPHQL_UNAUTHORIZED_ROLE
+              value: {{ .unauthorizedRole | quote }}
+            {{- end }}
+            {{- if (or ($.Values.secret).metricsSecret .enabledApis ) }}
+            - name: HASURA_GRAPHQL_ENABLED_APIS
+              value: {{ template "hge.enabledApis" $ }}
+            {{- end }}
+            # Self-hosted control plane configurations for Hasura Enterprise classic
+            {{- if .lux.proEndpoint }}
+            - name: HASURA_GRAPHQL_PRO_ENDPOINT
+              value: {{ .lux.proEndpoint | quote }}
+            {{- end }}
+            {{- if .lux.authIssuer }}
+            - name: LUX_AUTH_ISSUER
+              value: {{ .lux.authIssuer | quote }}
+            {{- end }}
+            {{- if .lux.oauthJwkUrl }}
+            - name: LUX_OAUTH_JWK_URL
+              value: {{ .lux.oauthJwkUrl | quote }}
+            {{- end }}
+            {{- if .lux.oauthAuthorizationUrl }}
+            - name: LUX_OAUTH_AUTHORIZATION_URL
+              value: {{ .lux.oauthAuthorizationUrl | quote }}
+            {{- end }}
+            {{- if .lux.oauthTokenUrl }}
+            - name: LUX_OAUTH_TOKEN_URL
+              value: {{ .lux.oauthTokenUrl | quote }}
+            {{- end }}
+            {{- if .lux.logSinkUrl }}
+            - name: LUX_LOG_SINK_URL
+              value: {{ .lux.logSinkUrl | quote }}
+            {{- end }}
+            {{- if .lux.validatePatUrl }}
+            - name: LUX_VALIDATE_PAT_URL
+              value: {{ .lux.validatePatUrl | quote }}
+            {{- end }}
+            {{- if .lux.metricsUrl }}
+            - name: LUX_METRICS_URL
+              value: {{ .lux.metricsUrl | quote }}
+            {{- end }}
+            {{- if .lux.disableLogSender }}
+            - name: LUX_DISABLE_LOG_SENDER
+              value: {{ .lux.disableLogSender | quote }}
+            {{- end }}
+            {{- range $key, $value := (coalesce .extraConfigs .additionalConfigs) }}
+            - name: {{ $key }}
+              valueFrom:
+                configMapKeyRef:
+                  key: {{ $key }}
+                  name: {{ template "common.configMapName" $ }}
+            {{- end }}
+          {{- end }}
+          {{- if or (.Values.config).metadataOnly (.Values.secret).metadataDbUrl }}
+            - name: HASURA_GRAPHQL_METADATA_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_METADATA_DATABASE_URL
+                  name: {{ template "common.secretsName" $ }}
+          {{- else }}
+            - name: HASURA_GRAPHQL_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_DATABASE_URL
+                  name: {{ template "common.secretsName" $ }}
+          {{- end }}
+          {{- with .Values.secret }}
+            {{- if .adminSecrets }}
+            - name: HASURA_GRAPHQL_ADMIN_SECRETS
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_ADMIN_SECRETS
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- if .adminSecret }}
+            - name: HASURA_GRAPHQL_ADMIN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_ADMIN_SECRET
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- if .eeLicenseKey }}
+            - name: HASURA_GRAPHQL_EE_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_EE_LICENSE_KEY
+                  name: {{ template "common.secretsName" $ }}
+            {{- else if .proKey }}
+            - name: HASURA_GRAPHQL_PRO_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_PRO_KEY
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{ $redisUrl := tpl .redisUrl $ }}
+            {{ $rateLimitRedisUrl := tpl .rateLimitRedisUrl $ }}
+            {{- if $rateLimitRedisUrl }}
+            - name: HASURA_GRAPHQL_RATE_LIMIT_REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_RATE_LIMIT_REDIS_URL
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- if $redisUrl }}
+            - name: HASURA_GRAPHQL_REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_REDIS_URL
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- if .ssoProviders }}
+            - name: HASURA_GRAPHQL_SSO_PROVIDERS
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_SSO_PROVIDERS
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- if .jwtSecrets }}
+            - name: HASURA_GRAPHQL_JWT_SECRETS
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_JWT_SECRETS
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- if .jwtSecret }}
+            - name: HASURA_GRAPHQL_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_JWT_SECRET
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- if.metricsSecret }}
+            - name: HASURA_GRAPHQL_METRICS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: HASURA_GRAPHQL_METRICS_SECRET
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+            {{- range $key, $value := (coalesce .extraSecrets .data) }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ $key }}
+                  name: {{ template "common.secretsName" $ }}
+            {{- end }}
+          {{- end }}
+          {{- with .Values.extraEnvs }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.extraEnvsTpl }}
+            {{- tpl .Values.extraEnvsTpl $ | nindent 12 }}
+          {{- end }}
+          
+        {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 }}
+    {{- end }}

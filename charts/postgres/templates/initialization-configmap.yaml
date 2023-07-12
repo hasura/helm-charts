@@ -1,0 +1,15 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- if (.Values.initdb).scripts }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+  namespace: {{ template "common.namespace" . }}
+  labels:
+    app: {{ include "postgres.name" . }}
+data: 
+  {{- toYaml .Values.initdb.scripts | nindent 2 }}
+{{- end }}

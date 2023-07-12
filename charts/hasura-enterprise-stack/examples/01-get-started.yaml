@@ -1,0 +1,4 @@
+graphql-engine:
+  secret:
+    adminSecret: "hasura"
+    eeLicenseKey: ""

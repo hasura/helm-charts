@@ -1,0 +1,195 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+global:
+  ## Provide the naming prefix
+  ## @default: {{ .Release.Name }}
+  ##
+  prefixOverride: ""
+
+## Override Kubernetes version
+##
+kubeVersion: ""
+
+## Provide a name in place of mongo-data-connector for `app:` labels
+##
+nameOverride: ""
+
+## Override the deployment namespace
+##
+namespaceOverride: ""
+
+## Labels to apply to all resources
+##
+labels: {}
+
+## The image repository of mongo-data-connector
+##
+image:
+  repository: hasura/mongo-data-connector
+  tag: v2.29.0
+  ## Specify a imagePullPolicy
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## Example:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+
+## Custom execution command
+##
+command: []
+
+## Custom arguments
+##
+args: []
+
+## Number of container replicas
+##
+replicas: "1"
+
+## Enable heath check configuration
+##
+healthChecks:
+  enabled: true
+
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+    successThreshold: 1
+
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+    successThreshold: 1
+
+## Service account for mongo-data-connector to use.
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+##
+serviceAccount:
+  enabled: false
+  name: ""
+
+## Additional annotations
+##
+annotations: {}
+
+## Disable the deploy timestamp annotation to skip force rollout
+##
+disableAnnotationTimestamp: true
+
+## The deployment strategy to use to replace existing pods with new ones.
+## DeploymentStrategy describes how to replace existing pods with new ones.
+strategy: {}
+
+## Assign custom affinity rules to the prometheus instance
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+##
+affinity: {}
+
+## Define which Nodes the Pods are scheduled on.
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## Tolerations for use with node taints
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: {}
+
+## Define privilege and access control settings for a Pod or Container
+##
+securityContext: {}
+
+## Additional initialization containers
+##
+initContainers: []
+
+## Extra containers
+##
+extraContainers: []
+
+## Extra volume mounts
+##
+extraVolumeMounts: []
+
+## Enable autoscaling with HorizontalPodAutoscaler configuration
+## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+##
+autoscaling:
+  enabled: false
+
+  ## Minimum and maximum number of replicas that the deployment can be scaled
+  ##
+  minReplicas: 1
+  maxReplicas: 2
+
+  ## Configure separate scale-up and scale-down behaviors
+  ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#configurable-scaling-behavior
+  ## Example:
+  ## scaleDown:
+  ##   stabilizationWindowSeconds: 300
+  ##   policies:
+  ##   - type: Percent
+  ##     value: 100
+  ##     periodSeconds: 15
+  ## scaleUp:
+  ##   stabilizationWindowSeconds: 0
+  ##   policies:
+  ##   - type: Percent
+  ##     value: 100
+  ##     periodSeconds: 15
+  ##   - type: Pods
+  ##     value: 4
+  ##     periodSeconds: 15
+  ##   selectPolicy: Max
+  ##
+  behavior: {}
+
+  ## Configure autoscaling policies based on metrics
+  ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-resource-metrics
+  ## Example:
+  ## - type: Resource
+  ##   resource:
+  ##     name: cpu
+  ##     target:
+  ##       type: Utilization
+  ##       averageUtilization: 50
+  ##
+  metrics: []
+
+## Resource requests and limits of deployment pods
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## Example:
+## requests:
+##   cpu: 250m
+##   memory: 256Mi
+##
+resources: {}
+
+## Additional environment variables for the deployment
+##
+extraEnvs: {}
+
+## Service configuration for mongo-data-connector service
+##
+service:
+  annotations: {}
+  labels: {}
+  type: ClusterIP

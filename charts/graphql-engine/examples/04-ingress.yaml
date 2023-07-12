@@ -1,0 +1,8 @@
+secret:
+  adminSecret: "hasura"
+
+ingress:
+  enabled: true
+  hostName: "hasura.example.local"
+  ingressClassName: ""
+  annotations: {}

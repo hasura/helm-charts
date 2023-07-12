@@ -1,0 +1,204 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+## Global parameters
+##
+global:
+  ## Global image registry to use if it needs to be overriden for some specific use cases (e.g local registries, custom images, ...)
+  ##
+  imageRegistry: ""
+
+  ## Reference to one or more secrets to be used when pulling images
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+
+  ## Global Redis parameters
+  ##
+  redis:
+    enabled: false
+    password: redispassword
+
+  ## Global data connector parameters
+  ##
+  connector:
+    ## Enable the graphql data connector service
+    ## You can connect to the internal service endpoint http://{{ .Release.Name }}-graphql-data-connector:8081
+    ##
+    graphql:
+      enabled: false
+
+    ## Enable the mongo data connector service
+    ## You can connect to the internal service endpoint http://{{ .Release.Name }}-mongo-data-connector:3000
+    ##
+    mongo:
+      enabled: false
+
+## Hasura GraphQL Engine configuration
+## see full values at https://github.com/hasura/helm-charts/blob/main/charts/graphql-engine/values.yaml
+##
+graphql-engine:
+  enabled: true
+  secret:
+    redisUrl: '{{ template "redis.url" $ }}'
+    rateLimitRedisUrl: '{{ template "redis.url" $ }}'
+
+## Enable GraphQL Data Connector to support extra data sources such as MySQL, MariaDB, SQL Server, etc...
+## see full values at https://github.com/hasura/helm-charts/blob/main/charts/graphql-data-connector/values.yaml
+##
+graphql-data-connector: {}
+
+## Enable Mongo Data Connector to support Mongo data source
+## see full values at https://github.com/hasura/helm-charts/blob/main/charts/mongo-data-connector/values.yaml
+##
+mongo-data-connector: {}
+
+## Enable redis for GraphQL Engine's cache and rate limit
+## see full values at https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+##
+redis: {}
+
+## Dex is a middleware identity service for SSO login on console
+## It is required if you want to connect with special authorization protocol ush as SAML, LDAP
+## see: https://github.com/dexidp/helm-charts/blob/master/charts/dex/values.yaml
+## the openid configuration is at http://<dex-host>/.well-known/openid-configuration
+##
+dex:
+  enabled: false
+  # config:
+  #   issuer: http://localhost:5556
+  #   storage:
+  #     type: memory
+  #     enablePasswordDB: false
+
+## Prometheus monitoring stack including Prometheus, Grafana, Node Explorer and Alertmanager
+## Ref: https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+##
+kube-prometheus-stack:
+  enabled: false
+
+  ## Configuration for alertmanager
+  ## ref: https://prometheus.io/docs/alerting/alertmanager/
+  ##
+  alertmanager:
+    ## Deploy alertmanager
+    ##
+    enabled: true
+
+    ## Alertmanager configuration directives (as string type, preferred over the config hash map)
+    ## stringConfig will be used only, if tplConfig is true
+    ## ref: https://prometheus.io/docs/alerting/configuration/#configuration-file
+    ##      https://prometheus.io/webtools/alerting/routing-tree-editor/
+    ##
+    stringConfig: ""
+
+    ## Pass the Alertmanager configuration directives through Helm's templating
+    ## engine. If the Alertmanager configuration contains Alertmanager templates,
+    ## they'll need to be properly escaped so that they are not interpreted by
+    ## Helm
+    ## ref: https://helm.sh/docs/developing_charts/#using-the-tpl-function
+    ##      https://prometheus.io/docs/alerting/configuration/#tmpl_string
+    ##      https://prometheus.io/docs/alerting/notifications/
+    ##      https://prometheus.io/docs/alerting/notification_examples/
+    tplConfig: false
+
+    ## Alertmanager template files to format alerts
+    ## By default, templateFiles are placed in /etc/alertmanager/config/ and if
+    ## they have a .tmpl file suffix will be loaded. See config.templates above
+    ## to change, add other suffixes. If adding other suffixes, be sure to update
+    ## config.templates above to include those suffixes.
+    ## ref: https://prometheus.io/docs/alerting/notifications/
+    ##      https://prometheus.io/docs/alerting/notification_examples/
+    ##
+    templateFiles: {}
+    #
+    ## An example template:
+    #   template_1.tmpl: |-
+    #       {{ define "cluster" }}{{ .ExternalURL | reReplaceAll ".*alertmanager\\.(.*)" "$1" }}{{ end }}
+    #
+    #       {{ define "slack.myorg.text" }}
+    #       {{- $root := . -}}
+    #       {{ range .Alerts }}
+    #         *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
+    #         *Cluster:* {{ template "cluster" $root }}
+    #         *Description:* {{ .Annotations.description }}
+    #         *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+    #         *Runbook:* <{{ .Annotations.runbook }}|:spiral_note_pad:>
+    #         *Details:*
+    #           {{ range .Labels.SortedPairs }} - *{{ .Name }}:* `{{ .Value }}`
+    #           {{ end }}
+    #       {{ end }}
+    #       {{ end }}
+
+  ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+  ##
+  grafana:
+    enabled: true
+
+    adminPassword: prom-operator
+
+    ## Configure grafana dashboard providers
+    ## ref: http://docs.grafana.org/administration/provisioning/#dashboards
+    ##
+    ## `path` must be /var/lib/grafana/dashboards/<provider_name>
+    ##
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: "hasura"
+            orgId: 1
+            folder: "Hasura"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/hasura
+
+    dashboards:
+      ## Dashboards for Hasura Prometheus metrics
+      hasura:
+        hasura-overview:
+          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-overview.json
+        hasura-graphql-http:
+          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-graphql-http.json
+        hasura-health:
+          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-health.json
+        hasura-subscription:
+          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-subscription.json
+        hasura-events:
+          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-events.json
+
+    ## Configure additional grafana data sources (passed through tpl)
+    ## ref: http://docs.grafana.org/administration/provisioning/#datasources
+    ## Set the below configuration if the Jaeger data source is enabled
+    ##
+    # additionalDataSources:
+    #   - name: Jaeger
+    #     editable: false
+    #     orgId: 1
+    #     type: jaeger
+    #     url: http://{{ printf "%s-jaeger-query" .Release.Name }}:16686
+    #     version: 1
+
+  ## Deploy node exporter as a daemonset to all nodes
+  ##
+  nodeExporter:
+    enabled: true
+
+  ## Deploy a Prometheus instance
+  ##
+  prometheus:
+    enabled: true
+
+## Jaeger services for Traces collector.
+## Ref: https://github.com/jaegertracing/helm-charts/tree/main/charts/jaeger
+##
+jaeger:
+  enabled: false
+
+  nameOverride: ""
+  fullnameOverride: ""

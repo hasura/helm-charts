@@ -1,0 +1,34 @@
+config:
+  authHook: ""
+  authHookMode: "GET"
+  unauthorizedRole: "anonymous"
+
+secret:
+  eeLicenseKey: ""
+
+  ## The default admin secret isn't used if multiple secrets are enabled (EE)
+  ## However, you should keep it for fallback in the case the license key is expired
+  ##
+  adminSecret: hasura
+
+  ## You also can specify a list of admin secrets (EE)
+  ##
+  adminSecrets:
+    - random-secret
+    - another-secret
+
+  ## This configuration enables Authentication using JWT
+  ## ref: https://hasura.io/docs/latest/auth/authentication/jwt/#configuring-jwt-mode
+  ## Example:
+  ## type: "RS256"
+  ## issuer: "<issuer>"
+  ##
+  jwtSecret: {}
+
+  ## You can configure GraphQL Engine with a list of JWT secrets. This enables you to authenticate with different JWT issuers. (EE)
+  ## https://hasura.io/docs/latest/security/multiple-jwt-secrets/
+  ## Example:
+  ## - type: "RS256"
+  ##   issuer: "<issuer>"
+  ##
+  jwtSecrets: []

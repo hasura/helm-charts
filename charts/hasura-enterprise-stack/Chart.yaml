@@ -1,0 +1,54 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+apiVersion: v2
+name: hasura-enterprise-stack
+description: An Helm chart for the complete end-to-end Hasura GraphQL Engine Enterprise ecosystem solution in Kubernetes
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+version: 0.1.0
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: 2.29.0
+
+dependencies:
+  - name: graphql-engine
+    version: 0.1.0
+    repository: file://../graphql-engine
+    condition: graphql-engine.enabled
+  - name: graphql-data-connector
+    version: 0.1.0
+    repository: file://../graphql-data-connector
+    condition: global.connector.graphql.enabled
+  - name: mongo-data-connector
+    version: 0.1.0
+    repository: file://../mongo-data-connector
+    condition: global.connector.mongo.enabled
+  - name: redis
+    version: 17.11.7
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: global.redis.enabled
+  - name: dex
+    version: 0.14.3
+    repository: https://charts.dexidp.io
+    condition: dex.enabled
+  - name: kube-prometheus-stack
+    version: 47.3.0
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: kube-prometheus-stack.enabled
+  - name: jaeger
+    version: 0.71.8
+    repository: https://jaegertracing.github.io/helm-charts
+    condition: jaeger.enabled

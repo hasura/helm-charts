@@ -1,0 +1,12 @@
+# See https://github.com/helm/chart-testing#configuration
+remote: origin
+chart-dirs:
+  - charts
+chart-repos:
+  - dex=https://charts.dexidp.io
+  - kube-prometheus-stack=https://prometheus-community.github.io/helm-charts
+  - jaeger=https://jaegertracing.github.io/helm-charts
+helm-extra-args: --timeout=600s
+target-branch: main
+validate-maintainers: false
+check-version-increment: false
