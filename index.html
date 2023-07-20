@@ -1,11 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  
-</body>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hasura Helm Charts</title>
+    <meta property="og:title" content="Hasura Helm Charts" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="Hasura Helm chart repository" />
+    <meta property="og:description" content="Hasura Helm chart repository" />
+    <link rel="canonical" href="https://hasura.github.io/helm-charts" />
+    <meta property="og:url" content="https://hasura.github.io/helm-charts" />
+    <meta property="og:site_name" content="Hasura Helm Charts" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta property="twitter:title" content="Hasura Helm Charts" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "description": "Hasura Helm chart repository",
+        "headline": "Hasura Helm Charts",
+        "name": "hasura-helm-charts",
+        "url": "https://hasura.github.io/helm-charts"
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://getbootstrap.com/docs/4.6/assets/css/docs.css"
+    />
+  </head>
+  <body>
+    <div class="container my-4 bd-content">
+      <h1 class="bd-title">
+        <a href="https://hasura.github.io/helm-charts">Hasura Helm Charts</a>
+      </h1>
+
+      <p>
+        <img
+          src="https://img.shields.io/github/actions/workflow/status/hasura/helm-charts/release.yaml?style=flat-square&amp;branch=main"
+          alt="GitHub Workflow Status"
+        />
+      </p>
+
+      <p>
+        Various Helm
+        <a href="https://helm.sh/docs/topics/charts/">charts</a> for
+        <a href="https://hasura.io/">Hasura GraphQL Engine ecosystem</a>.
+      </p>
+
+      <div class="my-5">
+        <p class="text-center">
+          <img
+            src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg"
+            alt="Hasura"
+          />
+        </p>
+      </div>
+      <h2 id="usage">Usage</h2>
+
+      <p>
+        <a href="https://helm.sh">Helm</a> must be installed to use these
+        charts. Please refer to the
+        <a href="https://helm.sh/docs/intro/install/">official documentation</a>
+        to get started.
+      </p>
+
+      <div class="highlight">
+        <pre
+          class="chroma"
+        ><code class="language-bash">helm repo add hasura https://hasura.github.io/helm-charts</code></pre>
+      </div>
+
+      <p>You can then see the charts by running:</p>
+
+      <div class="highlight">
+        <pre
+          class="chroma"
+        ><code class="language-bash">helm search repo hasura</code></pre>
+      </div>
+
+      <h2 id="license">License</h2>
+
+      <p>
+        Apache 2.0 License. Please see
+        <a href="https://github.com/hasura/helm-charts/blob/main/LICENSE"
+          >License File</a
+        >
+        for more information.
+      </p>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"
+      integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      anchors.add();
+    </script>
+  </body>
 </html>
