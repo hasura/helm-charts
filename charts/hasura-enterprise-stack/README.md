@@ -18,6 +18,10 @@ Components included in this package:
 2. Helm v3.8.0 or above. 
 3. Hasura helm repo configured.
 
+```bash
+helm repo add hasura https://hasura.github.io/helm-charts
+```
+
 > The Bitnami repository has been moved to OCI-based registries that are GA supported in by Helm since v3.8.0. If you use the helm chart prior to v3.8.0, you need to enable the [experiment environment](https://helm.sh/docs/topics/registries/#oci-support-prior-to-v380).  
 
 ## Get Started

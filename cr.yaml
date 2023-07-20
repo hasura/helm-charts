@@ -1,0 +1,6 @@
+owner: hasura
+git-repo: helm-charts
+git-base-url: https://api.github.com/
+git-upload-url: https://uploads.github.com/
+skip-existing: true
+release-name-template: "{{ .Name }}@{{ .Version }}"

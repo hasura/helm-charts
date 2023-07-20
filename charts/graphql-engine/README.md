@@ -8,6 +8,10 @@ This chart deploys the GraphQL Engine service with a Postgres instance for metad
 2. Helm (preferably v3) installed – instructions are [here](https://helm.sh/docs/intro/install/).
 3. Hasura helm repo configured.
   
+```bash
+helm repo add hasura https://hasura.github.io/helm-charts
+```
+
 ## Get Started
 
 ### Install Helm Chart
