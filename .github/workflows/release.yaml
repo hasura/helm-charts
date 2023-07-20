@@ -1,11 +1,6 @@
 name: Release Charts
 
 on:
-  workflow_call:
-    inputs:
-      config-path:
-        required: true
-        type: string
   push:
     branches:
       - setup-github-action
