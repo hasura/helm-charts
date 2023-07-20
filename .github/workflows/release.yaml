@@ -3,9 +3,7 @@ name: Release Charts
 on:
   push:
     branches:
-      - setup-github-action
-    tags:
-      - "*"
+      - main
 
 jobs:
   tests:

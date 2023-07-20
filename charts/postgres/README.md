@@ -9,6 +9,10 @@ This chart deploys a PostgreSQL instance for metadata storage.
 1. Helm (preferably v3) installed – instructions are [here](https://helm.sh/docs/intro/install/).
 2. Hasura helm repo configured.
   
+```bash
+helm repo add hasura https://hasura.github.io/helm-charts
+```
+
 ## Parameters 
 
 ### Global parameters

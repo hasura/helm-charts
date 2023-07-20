@@ -7,6 +7,10 @@ This chart deploys the GraphQL Data Connector service.
 1. Helm (preferably v3) installed – instructions are [here](https://helm.sh/docs/intro/install/).
 2. Hasura helm repo configured.
   
+```bash
+helm repo add hasura https://hasura.github.io/helm-charts
+```
+
 ## Parameters 
 
 | Name                                              | Description                                                                                                | Value                           |
