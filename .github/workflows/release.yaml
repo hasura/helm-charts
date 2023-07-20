@@ -33,7 +33,6 @@ jobs:
         uses: azure/setup-helm@v3
 
       - name: Build hasura-enterprise-stack dependencies
-        if: steps.list-changed.outputs.changed == 'true'
         run: cd charts/hasura-enterprise-stack && helm dependency update
 
       - name: Run chart-releaser
