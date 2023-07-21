@@ -42,7 +42,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-git-chglog@v1
+      - uses: Bpazy/setup-git-chglog@v1
         with:
           git-chglog-version: "0.15.4"
 
