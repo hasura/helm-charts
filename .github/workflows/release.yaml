@@ -178,7 +178,7 @@ jobs:
           echo "released_charts_files: ${released_charts_files}"
 
           # Commit changes locally.
-          locale chart_names=""
+          local chart_names=""
           for chart_file in ${released_charts_files}; do
               chart_name=$(grep -Po "(?<=^name: ).+" ${chart_file})
               chart_version=$(grep -Po "(?<=^version: ).+" ${chart_file})
