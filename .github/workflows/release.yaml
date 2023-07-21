@@ -50,7 +50,7 @@ jobs:
           for chart_file in ${{ needs.find-charts-to-release.outputs.modified-charts-files }}; do
               chart_name=$(grep -Po "(?<=^name: ).+" ${chart_file})
               chart_version=$(grep -Po "(?<=^version: ).+" ${chart_file})
-              chart_tag="${chart_name}-${chart_version}"
+              chart_tag="${chart_name}@${chart_version}"
               chart_path="charts/${chart_name}"
 
               #
