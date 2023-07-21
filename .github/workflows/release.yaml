@@ -19,10 +19,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: nrwl/nx-set-shas@v3
+        id: main_branch
+        with:
+          main-branch-name: main
+          workflow-id: "lint-test.yaml"
+
       - name: Get list of changed charts
         id: list-changed-charts
-        uses: tj-actions/changed-files@v36
+        uses: tj-actions/changed-files@v37
         with:
+          base_sha: ${{ steps.main_branch.outputs.base }}
           files: charts/*/Chart.yaml
 
   generate-charts-changelog:
