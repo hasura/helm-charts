@@ -2,7 +2,7 @@ name: Release Charts
 
 on:
   push:
-    branches: ["release/*"]
+    branches: ["release-*"]
 
 jobs:
   tests:
