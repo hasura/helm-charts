@@ -50,8 +50,8 @@ jobs:
         shell: bash
         run: |
           set -x
-          add-apt-repository ppa:rmescandon/yq
-          apt update && apt install yq -y
+          sudo add-apt-repository ppa:rmescandon/yq
+          sudo apt update && apt install yq -y
 
           # TODO: Bundle all of that logic in a Github Action to make it easy to share.
           for chart_file in ${{ needs.find-charts-to-release.outputs.modified-charts-files }}; do
