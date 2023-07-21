@@ -171,14 +171,16 @@ jobs:
           echo "released_charts_files: ${released_charts_files}"
 
           # Commit changes locally.
+          locale chart_names=""
           for chart_file in ${released_charts_files}; do
               chart_name=$(grep -Po "(?<=^name: ).+" ${chart_file})
               chart_version=$(grep -Po "(?<=^version: ).+" ${chart_file})
               chart_path="charts/${chart_name}"
 
               git add ${chart_path}/CHANGELOG.md
-              git commit -m "Update CHANGELOG for chart ${chart_name} ${chart_version}"
+              chart_names="${chart_names} ${chart_name}:${chart_version}"
           done
 
+          git commit -m "Update CHANGELOG for charts ${chart_names}"
           # Push changes to the main branch.
           git push origin "${GITHUB_REF##*/}":main
