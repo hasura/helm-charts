@@ -162,15 +162,15 @@ kube-prometheus-stack:
       ## Dashboards for Hasura Prometheus metrics
       hasura:
         hasura-overview:
-          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-overview.json
+          url: https://grafana.com/api/dashboards/19120/revisions/1/download
         hasura-graphql-http:
-          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-graphql-http.json
+          url: https://grafana.com/api/dashboards/19121/revisions/1/download
         hasura-health:
-          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-health.json
+          url: https://grafana.com/api/dashboards/19124/revisions/1/download
         hasura-subscription:
-          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-subscription.json
+          url: https://grafana.com/api/dashboards/19123/revisions/1/download
         hasura-events:
-          url: https://raw.githubusercontent.com/hasura/ee-observability-demo/main/grafana/dashboards/hasura/hasura-events.json
+          url: https://grafana.com/api/dashboards/19122/revisions/1/download
 
     ## Configure additional grafana data sources (passed through tpl)
     ## ref: http://docs.grafana.org/administration/provisioning/#datasources
