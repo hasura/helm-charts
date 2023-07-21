@@ -36,22 +36,22 @@ jobs:
     needs: find-charts-to-release
     if: needs.find-charts-to-release.outputs.modified-charts-files
     runs-on: ubuntu-latest
-    container: quay.io/git-chglog/git-chglog:0.15.3
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Install main dependencies
-        run: |
-          apk add bash
+      - uses: actions/setup-git-chglog@v1
+        with:
+          git-chglog-version: "0.15.4"
 
       - name: Generate charts changelog files
         shell: bash
         run: |
           set -x
-          apk add git grep yq
+          add-apt-repository ppa:rmescandon/yq
+          apt update && apt install yq -y
 
           # TODO: Bundle all of that logic in a Github Action to make it easy to share.
           for chart_file in ${{ needs.find-charts-to-release.outputs.modified-charts-files }}; do
