@@ -19,6 +19,10 @@ helm search repo hasura
 
 For more information, have a look at the [Using Helm](https://helm.sh/docs/intro/using_helm/#helm-repo-working-with-repositories) documentation.
 
+## Contributing
 
-# License
+Check out our [contributing guide](./CONTRIBUTING.md) for more details.
+
+## License
+
 Resources in this repository are released under the [Apache 2.0 license](./LICENSE).

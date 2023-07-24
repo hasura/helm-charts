@@ -1,13 +1,13 @@
 dependencies:
 - name: graphql-engine
   repository: file://../graphql-engine
-  version: 0.0.2
+  version: 0.1.0
 - name: graphql-data-connector
   repository: file://../graphql-data-connector
-  version: 0.0.2
+  version: 0.1.0
 - name: mongo-data-connector
   repository: file://../mongo-data-connector
-  version: 0.0.2
+  version: 0.1.0
 - name: redis
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 17.13.2
@@ -20,5 +20,5 @@ dependencies:
 - name: jaeger
   repository: https://jaegertracing.github.io/helm-charts
   version: 0.71.10
-digest: sha256:6bd0bbb84895127a0b39f539051694c8f14305968ad197b7dbbea25fa7bffac8
-generated: "2023-07-21T21:07:09.61143775+07:00"
+digest: sha256:4259fa375f7717427a182da886254f96a1d10bac90aa43755478ae7dc148a52f
+generated: "2023-07-24T14:35:30.837468773+07:00"
