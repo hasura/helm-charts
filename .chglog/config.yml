@@ -7,20 +7,16 @@ options:
   commits:
     filters:
       Type:
-        - feat
         - fix
+        - feat
+        - feature
         - deprecate
         - remove
         - security
   commit_groups:
-    title_maps:
-      feat: Features
-      fix: Bug Fixes
-      remove: Removed
-      deprecate: Deprecated
-      security: Security
+    title_maps: {}
   header:
-    pattern: "^((\\w+)\\s.*)$"
+    pattern: "^((\\w+):?\\s.*)$"
     pattern_maps:
       - Subject
       - Type
