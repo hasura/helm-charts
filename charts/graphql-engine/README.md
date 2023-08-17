@@ -1,4 +1,4 @@
-# Graph Engine Helm Chart
+# GraphQL Engine Helm Chart
 
 This chart deploys the GraphQL Engine service with a Postgres instance for metadata storage.
 

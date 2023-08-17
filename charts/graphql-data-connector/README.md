@@ -1,4 +1,4 @@
-# Graph Data Connector Helm Chart
+# GraphQL Data Connector Helm Chart
 
 This chart deploys the GraphQL Data Connector service.
 
