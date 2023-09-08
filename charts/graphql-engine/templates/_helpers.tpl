@@ -19,9 +19,9 @@
 
 {{- define "common.labels" -}}
   app: {{ template "common.name" . }}
-  {{- range $key, $val := .Values.labels }}
-    {{ $key }}: {{ $val | quote }}
-  {{- end }}
+{{- range $key, $val := .Values.labels }}
+{{ $key }}: {{ $val | quote }}
+{{- end }}
 {{- end }}
 
 {{- define "common.image" -}}

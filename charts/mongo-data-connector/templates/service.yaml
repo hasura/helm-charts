@@ -10,7 +10,7 @@ metadata:
   namespace: {{ template "common.namespace" . }}
   annotations:
   {{- if or (.Values.service).annotations (.Values.service).additionalAnnotations}}
-    {{- toYaml (coalesce .Values.service.annotations .Values.service.additionalAnnotations) . | nindent 4 }}
+    {{- toYaml (coalesce .Values.service.annotations .Values.service.additionalAnnotations) | nindent 4 }}
   {{- end }}
   labels:
     {{- include "mdc.labels" . | nindent 4 }}

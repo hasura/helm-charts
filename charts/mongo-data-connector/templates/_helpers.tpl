@@ -27,7 +27,7 @@
 
 {{- define "mdc.labels" -}}
   app: {{ template "mdc.name" . }}
-  {{- range $key, $val := .Values.labels }}
-    {{ $key }}: {{ $val | quote }}
-  {{- end }}
+{{- range $key, $val := .Values.labels }}
+{{ $key }}: {{ $val | quote }}
+{{- end }}
 {{- end }}

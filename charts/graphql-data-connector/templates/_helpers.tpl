@@ -27,7 +27,7 @@
 
 {{- define "gdc.labels" -}}
   app: {{ template "gdc.name" . }}
-  {{- range $key, $val := .Values.labels }}
-    {{ $key }}: {{ $val | quote }}
-  {{- end }}
+{{- range $key, $val := .Values.labels }}
+{{ $key }}: {{ $val | quote }}
+{{- end }}
 {{- end }}
