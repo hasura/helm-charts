@@ -33,7 +33,7 @@ spec:
         deployment-timestamp: "{{ date "20060102150405" now }}"
       {{- end }}
       {{- if .Values.annotations }}
-        {{- .Values.annotations | nindent 8 }}
+        {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}
       labels:
       {{- include "gdc.labels" . | nindent 8 }}
@@ -96,9 +96,9 @@ spec:
         {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
     {{- end }}

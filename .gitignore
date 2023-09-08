@@ -2,3 +2,4 @@
 charts/*/charts
 tmp/
 .cr-release-packages
+**/values.override.yaml
