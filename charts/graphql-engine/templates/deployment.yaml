@@ -82,9 +82,16 @@ spec:
           livenessProbe:
             {{- toYaml .Values.healthChecks.livenessProbe | nindent 12 }}
         {{- end }}
-        {{- if .Values.extraVolumeMounts }}
+        {{- if or .Values.extraVolumeMounts (.Values.secretProviderClass).enabled }}
           volumeMounts:
+          {{- if .Values.extraVolumeMounts }}
             {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+          {{- end }}
+            {{- if (.Values.secretProviderClass).enabled }}
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+            {{- end }}
         {{- end }}
           env:
           {{- with .Values.config }}
@@ -166,6 +173,7 @@ spec:
                   name: {{ template "common.configMapName" $ }}
             {{- end }}
           {{- end }}
+          {{- if or (.Values.secret).enabled (.Values.postgres).enabled }}
           {{- if or (.Values.config).metadataOnly (.Values.secret).metadataDbUrl }}
             - name: HASURA_GRAPHQL_METADATA_DATABASE_URL
               valueFrom:
@@ -179,6 +187,8 @@ spec:
                   key: HASURA_GRAPHQL_DATABASE_URL
                   name: {{ template "common.secretsName" $ }}
           {{- end }}
+          {{- end }}
+          {{- if (.Values.secret).enabled }}
           {{- with .Values.secret }}
             {{- if .adminSecrets }}
             - name: HASURA_GRAPHQL_ADMIN_SECRETS
@@ -259,6 +269,7 @@ spec:
                   name: {{ template "common.secretsName" $ }}
             {{- end }}
           {{- end }}
+          {{- end }}
           {{- with .Values.extraEnvs }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -277,4 +288,13 @@ spec:
     {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if (.Values.secretProviderClass).enabled }}
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ coalesce .Values.secretProviderClass.name (printf "%s-secret-provider" $appName) }}
     {{- end }}
