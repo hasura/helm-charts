@@ -122,7 +122,7 @@ nodeSelector: {}
 ## Tolerations for use with node taints
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: {}
+tolerations: []
 
 ## Define privilege and access control settings for a Pod or Container
 ##
@@ -197,7 +197,7 @@ resources: {}
 ## Additional environment variables for the graphql-engine deployment
 ## Ref: https://hasura.io/docs/latest/deployment/graphql-engine-flags/reference/
 ##
-extraEnvs: {}
+extraEnvs: []
 
 ## Additional environment variables for the graphql-engine deployment, using templates
 ##
@@ -431,6 +431,31 @@ secret:
   ## These secrets will be mapped into both secret and container environment variables
   ##
   extraSecrets: {}
+
+secretProviderClass:
+  enabled: false
+
+  ## Specify your secret provider class name (optional)
+  ## @default: <Release namespace>-secret-provider
+  ##
+  name: ""
+
+  ## Specify a custom apiVersion if your cluster is using unstable versions
+  ##
+  apiVersion: ""
+
+  ## Specify a secret provider. Accepted provider options: azure or vault or gcp
+  ## https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation#install-external-secret-providers
+  ##
+  provider: "vault"
+
+  ## Defines the desired state of synced K8s secret objects
+  ##
+  secretObjects: []
+
+  ## Configure customer parameters for the target secret provider
+  ##
+  parameters: {}
 
 ## The main postgres database for metadata and data source connection
 ## Disable the service if you use external Postgres clusters

@@ -112,7 +112,7 @@ nodeSelector: {}
 ## Tolerations for use with node taints
 ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 ##
-tolerations: {}
+tolerations: []
 
 ## Define privilege and access control settings for a Pod or Container
 ##
@@ -186,7 +186,7 @@ resources: {}
 
 ## Additional environment variables for the deployment
 ##
-extraEnvs: {}
+extraEnvs: []
 
 ## Service configuration for graphql-data-connector service
 ##
