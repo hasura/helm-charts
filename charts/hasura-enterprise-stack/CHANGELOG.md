@@ -1,6 +1,10 @@
 The changelog is automatically generated using [git-chglog](https://github.com/git-chglog/git-chglog) and it follows [Keep a Changelog](https://keepachangelog.com) format.
 
 
+<a name="hasura-enterprise-stack@0.2.0"></a>
+## [hasura-enterprise-stack@0.2.0] - 2023-09-20
+- feat: support SecretProviderClass for GraphQL Engine ([#7](https://github.com/hasura/helm-charts/issues/7))
+
 <a name="hasura-enterprise-stack@0.1.1"></a>
 ## [hasura-enterprise-stack@0.1.1] - 2023-09-08
 
