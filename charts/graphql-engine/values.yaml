@@ -39,7 +39,7 @@ labels: {}
 ##
 image:
   repository: hasura/graphql-engine
-  tag: v2.33.3
+  tag: v2.33.4
   ## Specify a imagePullPolicy
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
