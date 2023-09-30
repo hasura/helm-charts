@@ -237,6 +237,10 @@ ingress:
   ##
   path: ""
 
+  ## The pathType
+  ##
+  pathType: "ImplementationSpecific"
+
   ## The target service name
   ## @default: graphql-engine
   ##

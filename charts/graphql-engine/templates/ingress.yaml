@@ -33,7 +33,7 @@ spec:
             name: {{ $serviceName }}
             port:
               number: {{ $servicePort }}
-        pathType: ImplementationSpecific
+        pathType: {{ .Values.ingress.pathType }}
         path: /{{ .Values.ingress.path }}
 {{- else }}
     http:
