@@ -297,4 +297,14 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: {{ coalesce .Values.secretProviderClass.name (printf "%s-secret-provider" $appName) }}
+        {{- if .Values.extraVolumes -}}
+      {{- with .extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        {{- end -}}
+    {{- else if .Values.extraVolumes  -}}
+      volumes:
+      {{- with .extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     {{- end }}
