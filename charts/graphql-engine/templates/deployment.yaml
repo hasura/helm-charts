@@ -289,12 +289,17 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if (.Values.secretProviderClass).enabled }}
+    {{- if or .Values.extraVolumes (.Values.secretProviderClass).enabled }}
       volumes:
+      {{- if .Values.extraVolumes }}
+        {{- toYaml .Values.extraVolumes | nindent 8 }}
+      {{- end }}
+        {{- if (.Values.secretProviderClass).enabled }}
         - name: secrets-store-inline
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
               secretProviderClass: {{ coalesce .Values.secretProviderClass.name (printf "%s-secret-provider" $appName) }}
+        {{- end }}
     {{- end }}

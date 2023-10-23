@@ -136,6 +136,10 @@ initContainers: []
 ##
 extraContainers: []
 
+## Optionally specify extra list of additional volumes for the PostgreSQL pod
+##
+extraVolumes: []
+
 ## Extra volume mounts
 ##
 extraVolumeMounts: []
