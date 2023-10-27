@@ -17,23 +17,23 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.2.0
+version: 0.2.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
-appVersion: 2.33.4
+appVersion: 2.34.0
 
 dependencies:
   - name: graphql-engine
-    version: 0.2.0
+    version: 0.2.1
     repository: file://../graphql-engine
     condition: graphql-engine.enabled
   - name: graphql-data-connector
-    version: 0.2.0
+    version: 0.2.1
     repository: file://../graphql-data-connector
     condition: global.connector.graphql.enabled
   - name: mongo-data-connector
-    version: 0.2.0
+    version: 0.2.1
     repository: file://../mongo-data-connector
     condition: global.connector.mongo.enabled
   - name: redis
