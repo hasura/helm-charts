@@ -124,6 +124,11 @@ nodeSelector: {}
 ##
 tolerations: []
 
+## Enable topology spread constraints to control how Pods are spread across your cluster among failure-domains
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+##
+topologySpreadConstraints: []
+
 ## Define privilege and access control settings for a Pod or Container
 ##
 securityContext: {}
