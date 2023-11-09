@@ -24,7 +24,7 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
         id: main_branch
         with:
-          main-branch-name: dd805e391c9f19add8d9e9cc048bd9407cb69c85
+          main-branch-name: release-v0.2.1
           workflow-id: "lint-test.yaml"
 
       - name: Get list of changed charts
