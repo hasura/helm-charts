@@ -57,7 +57,7 @@ jobs:
         shell: bash
         run: |
           set -x
-          sudo add-apt-repository pmainpa:rmescandon/yq
+          sudo add-apt-repository ppa:rmescandon/yq
           sudo apt update && sudo apt install yq -y
 
           for chart_file in ${{ needs.find-charts-to-release.outputs.modified-charts-files }}; do
@@ -134,11 +134,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
 
-      - name: Unstash generated cazure/setup-helmharts changelog files
+      - name: Unstash generated charts changelog files
         uses: actions/download-artifact@v3
         with:
           name: charts-generated-changelog
-          path: chartsmain
+          path: charts
 
       - name: Configure Git
         run: |
