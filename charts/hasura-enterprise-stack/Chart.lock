@@ -1,24 +1,24 @@
 dependencies:
 - name: graphql-engine
   repository: file://../graphql-engine
-  version: 0.2.1
+  version: 0.3.0
 - name: graphql-data-connector
   repository: file://../graphql-data-connector
-  version: 0.2.1
+  version: 0.3.0
 - name: mongo-data-connector
   repository: file://../mongo-data-connector
-  version: 0.2.1
+  version: 0.3.0
 - name: redis
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 17.13.2
+  version: 17.15.2
 - name: dex
   repository: https://charts.dexidp.io
-  version: 0.15.2
+  version: 0.15.3
 - name: kube-prometheus-stack
   repository: https://prometheus-community.github.io/helm-charts
-  version: 48.1.2
+  version: 48.6.0
 - name: jaeger
   repository: https://jaegertracing.github.io/helm-charts
-  version: 0.71.10
-digest: sha256:7d0595294d4dce1971f4d18bf830fcab3b71533dad53d1927ceb37367ae371e8
-generated: "2023-10-27T09:47:54.30292019+07:00"
+  version: 0.71.18
+digest: sha256:4ad51d4b882e29d09f5e28ce1afb01d4d096ccf48157efd28abc07fa36a489b0
+generated: "2023-11-09T11:23:06.326304546+07:00"
