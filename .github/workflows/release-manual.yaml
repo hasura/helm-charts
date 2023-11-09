@@ -1,4 +1,4 @@
-name: Release Charts
+name: Trigger Release Charts 
 
 on:
   workflow_dispatch:
@@ -44,9 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
 
       - uses: Bpazy/setup-git-chglog@v1
         with:
@@ -59,7 +60,6 @@ jobs:
           sudo add-apt-repository ppa:rmescandon/yq
           sudo apt update && sudo apt install yq -y
 
-          # TODO: Bundle all of that logic in a Github Action to make it easy to share.
           for chart_file in ${{ needs.find-charts-to-release.outputs.modified-charts-files }}; do
               chart_name=$(grep -Po "(?<=^name: ).+" ${chart_file})
               chart_version=$(grep -Po "(?<=^version: ).+" ${chart_file})
@@ -129,11 +129,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
 
-      - name: Unstash generated charts changelog files
+      - name: Unstash generated cazure/setup-helmharts changelog files
         uses: actions/download-artifact@v3
         with:
           name: charts-generated-changelog
@@ -165,9 +166,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 
+          ref: ${{ github.event.inputs.branch }}
 
       - name: Unstash generated charts changelog files
         uses: actions/download-artifact@v3
