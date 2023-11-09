@@ -1,8 +1,13 @@
-name: Release Charts
+name: Release Charts 
 
 on:
-  push:
-    branches: ["release-*"]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Target branch to release"
+        default: "main"
+      base-branch:
+        description: "The base branch to compare the version"
 
 jobs:
   tests:
@@ -15,19 +20,20 @@ jobs:
       modified-charts-files: ${{ steps.list-changed-charts.outputs.all_modified_files }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@v4
         id: main_branch
         with:
-          main-branch-name: main
+          main-branch-name: ${{ github.event.inputs.base-branch }}
           workflow-id: "lint-test.yaml"
 
       - name: Get list of changed charts
         id: list-changed-charts
-        uses: tj-actions/changed-files@v37
+        uses: tj-actions/changed-files@v40
         with:
           base_sha: ${{ steps.main_branch.outputs.base }}
           files: charts/*/Chart.yaml
@@ -38,9 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
 
       - uses: Bpazy/setup-git-chglog@v1
         with:
@@ -53,7 +60,6 @@ jobs:
           sudo add-apt-repository ppa:rmescandon/yq
           sudo apt update && sudo apt install yq -y
 
-          # TODO: Bundle all of that logic in a Github Action to make it easy to share.
           for chart_file in ${{ needs.find-charts-to-release.outputs.modified-charts-files }}; do
               chart_name=$(grep -Po "(?<=^name: ).+" ${chart_file})
               chart_version=$(grep -Po "(?<=^version: ).+" ${chart_file})
@@ -123,9 +129,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
 
       - name: Unstash generated charts changelog files
         uses: actions/download-artifact@v3
@@ -159,9 +166,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
 
       - name: Unstash generated charts changelog files
         uses: actions/download-artifact@v3

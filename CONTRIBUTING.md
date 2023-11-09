@@ -44,7 +44,6 @@ Please follow our [Code of Conduct](code-of-conduct.md) in the context of any co
 
 The release process is automatic with [Github Action](.github/workflows/release.yaml). To release new helm chart versions, you need to:
 - Create a new branch with the prefix `release-*`.
-- Increase versions in `Chart.yaml` files that have new changes.
-- Push the new commit.
+- Trigger [Release Charts](https://github.com/hasura/helm-charts/actions/workflows/release.yaml) action with the current branch and the last released branch inputs.
 
-The workflow will compare changes of `charts/**/Chart.yaml` files between the release branch and `main` and release changed versions only.
+The workflow will compare changes of `charts/**/Chart.yaml` files between two branches and release changed versions only.
