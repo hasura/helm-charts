@@ -183,9 +183,9 @@ autoscaling:
 ## Resource requests and limits of deployment pods
 ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## Example:
-## requests:
-##   cpu: 250m
-##   memory: 256Mi
+## limits:
+##   memory: "2Gi"
+##   cpu: "1"
 ##
 resources: {}
 

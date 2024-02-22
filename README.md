@@ -9,6 +9,7 @@ Please refer to the [official documentation](https://helm.sh/docs/intro/install/
 
 ```bash
 helm repo add hasura https://hasura.github.io/helm-charts/
+helm repo update
 ```
 
 You can then see the charts by running:
@@ -16,6 +17,8 @@ You can then see the charts by running:
 ```bash
 helm search repo hasura
 ```
+
+> You can change the repo name `hasura` to another one if getting conflicts.
 
 For more information, have a look at the [Using Helm](https://helm.sh/docs/intro/using_helm/#helm-repo-working-with-repositories) documentation.
 

@@ -9,7 +9,19 @@ This chart deploys the GraphQL Data Connector service.
   
 ```bash
 helm repo add hasura https://hasura.github.io/helm-charts
+helm repo update
 ```
+
+> You can change the repo name `hasura` to another one if getting conflicts.
+
+## Get Started
+
+```bash
+helm install [RELEASE_NAME] hasura/mongo-data-connector
+```
+See [configuration](#parameters) below.
+
+See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation.
 
 ## Parameters 
 
