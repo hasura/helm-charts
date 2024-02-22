@@ -10,7 +10,10 @@ This chart deploys the GraphQL Engine service with a Postgres instance for metad
   
 ```bash
 helm repo add hasura https://hasura.github.io/helm-charts
+helm repo update
 ```
+
+> You can change the repo name `hasura` to another one if getting conflicts.
 
 ## Get Started
 

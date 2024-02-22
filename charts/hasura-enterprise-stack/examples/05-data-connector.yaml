@@ -16,3 +16,33 @@ graphql-engine:
   secret:
     adminSecret: "hasura"
     eeLicenseKey: "<license-key>"
+
+  ## Enable graphql-data-connector and mongo-data-connector health checks 
+  ## if you enable graphql-data-connector and face the race condition issue
+  ## because connector pods start up longer than graphql-engine. to Do not uncomment the health check container if you don't use the connector or graphql-engine pods are failed to start. 
+  ##
+  ## Note: change the <connector> to the data source that graphql-engine will connect
+  ## Accepted values: athena, mariadb, mysql, oracle, snowflake
+  ##
+  # initContainers:
+  #   - name: wait-for-graphql-data-connector
+  #     image: atkrad/wait4x:2
+  #     args:
+  #       - http
+  #       - http://{{ .Release.Name }}-graphql-data-connector:8081/api/v1/<connector>/health
+  #       - --expect-status-code
+  #       - "200"
+  #       - --timeout
+  #       - 300s
+  #     imagePullPolicy: IfNotPresent
+  # 
+  #   - name: wait-for-mongo-data-connector
+  #     image: atkrad/wait4x:2
+  #     args:
+  #       - http
+  #       - http://{{ .Release.Name }}-mongo-data-connector:8081/health
+  #       - --expect-status-code
+  #       - "200"
+  #       - --timeout
+  #       - 300s
+  #     imagePullPolicy: IfNotPresent
