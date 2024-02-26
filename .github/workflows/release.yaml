@@ -25,17 +25,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
 
-      - uses: nrwl/nx-set-shas@v4
-        id: main_branch
-        with:
-          main-branch-name: ${{ github.event.inputs.base-branch }}
-          workflow-id: "lint-test.yaml"
-
       - name: Get list of changed charts
         id: list-changed-charts
-        uses: tj-actions/changed-files@v40
+        uses: tj-actions/changed-files@v42
         with:
-          base_sha: ${{ steps.main_branch.outputs.base }}
+          base_sha: ${{ github.event.inputs.base-branch }}
           files: charts/*/Chart.yaml
 
   generate-charts-changelog:
@@ -112,7 +106,7 @@ jobs:
           done
 
       - name: Stash generated charts changelog files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: charts-generated-changelog
           path: |
@@ -135,7 +129,7 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
 
       - name: Unstash generated charts changelog files
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: charts-generated-changelog
           path: charts
@@ -146,7 +140,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4.0.0
 
       - name: Add dependencies
         run: |
@@ -172,7 +166,7 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
 
       - name: Unstash generated charts changelog files
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: charts-generated-changelog
           path: charts
