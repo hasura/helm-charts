@@ -1,5 +1,8 @@
 The changelog is automatically generated using [git-chglog](https://github.com/git-chglog/git-chglog) and it follows [Keep a Changelog](https://keepachangelog.com) format.
 
+<a name="hasura-enterprise-stack@0.4.0"></a>
+## [hasura-enterprise-stack@0.4.0] - 2024-02-26
+- feat: update hasura dependencies to v2.37.0 ([#15](https://github.com/hasura/helm-charts/pull/15))
 
 <a name="hasura-enterprise-stack@0.3.0"></a>
 ## [hasura-enterprise-stack@0.3.0] - 2023-11-09
