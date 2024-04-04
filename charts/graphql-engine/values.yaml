@@ -96,6 +96,8 @@ healthChecks:
 serviceAccount:
   enabled: false
   name: ""
+  annotations: {}
+  labels: {}
 
 ## Additional annotations
 ##
