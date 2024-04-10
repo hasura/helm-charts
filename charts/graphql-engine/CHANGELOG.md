@@ -1,6 +1,11 @@
 The changelog is automatically generated using [git-chglog](https://github.com/git-chglog/git-chglog) and it follows [Keep a Changelog](https://keepachangelog.com) format.
 
 
+<a name="graphql-engine@0.5.0"></a>
+## [graphql-engine@0.5.0] - 2024-04-10
+- feat: update hasura dependencies to v2.38.1 
+- feat: add service account template ([#19](https://github.com/hasura/helm-charts/pull/19))
+
 <a name="graphql-engine@0.4.0"></a>
 ## [graphql-engine@0.4.0] - 2024-02-26
 - feat: update hasura dependencies to v2.37.0 ([#15](https://github.com/hasura/helm-charts/pull/15))
