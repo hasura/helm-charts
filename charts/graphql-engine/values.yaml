@@ -95,7 +95,7 @@ healthChecks:
 ##
 serviceAccount:
   enabled: false
-  name: ""
+  name: graphql-engine
   annotations: {}
   labels: {}
 
