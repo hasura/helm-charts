@@ -4,7 +4,7 @@ This chart deploys the complete end-to-end Hasura GraphQL Engine Enterprise ecos
 
 Components included in this package:
 
-- [GraphQL Engine](../graphql-engine) 
+- [GraphQL Engine](../graphql-engine)
 - [GraphQL Data Connector](../graphql-data-connector)
 - [Mongo Data Connector](../mongo-data-connector)
 - [Bitnami package for Redis(R)](https://github.com/bitnami/charts/tree/main/bitnami/redis)
@@ -15,7 +15,7 @@ Components included in this package:
 ## Prerequisites
 
 1. Kubernetes 1.16+
-2. Helm v3.8.0 or above. 
+2. Helm v3.8.0 or above.
 3. Hasura helm repo configured.
 
 ```bash
@@ -25,7 +25,10 @@ helm repo update
 
 > You can change the repo name `hasura` to another one if getting conflicts.
 
-> The Bitnami repository has been moved to OCI-based registries that are GA supported in by Helm since v3.8.0. If you use the helm chart prior to v3.8.0, you need to enable the [experiment environment](https://helm.sh/docs/topics/registries/#oci-support-prior-to-v380).  
+> The Bitnami repository has been moved to OCI-based registries that are GA supported in by Helm since v3.8.0. If you use the helm chart prior to v3.8.0, you need to enable the [experiment environment](https://helm.sh/docs/topics/registries/#oci-support-prior-to-v380).
+
+> [!IMPORTANT]
+> All future versions of Redis will be released with source-available licenses. Starting with Redis 7.4, Redis will be dual-licensed under the [Redis Source Available License (RSALv2)](https://redis.io/legal/rsalv2-agreement/) and [Server Side Public License (SSPLv1)](https://redis.io/legal/server-side-public-license-sspl/). Consequently, Redis will no longer be distributed under the three-clause Berkeley Software Distribution (BSD). This helm chart locks Redis version < 7.4. You must take responsibility for the license if upgrading Redis version to 7.4 or newer.
 
 ## Get Started
 
@@ -34,13 +37,14 @@ helm repo update
 ```bash
 helm install [RELEASE_NAME] hasura/hasura-enterprise-stack
 ```
+
 See [configuration](#parameters) below.
 
 See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation.
 
 ### Configuration Examples
 
-See configuration examples [here](./examples). 
+See configuration examples [here](./examples).
 
 ### Uninstall Helm Chart
 
@@ -52,7 +56,7 @@ This removes all the Kubernetes components associated with the chart and deletes
 
 See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation.
 
-## Parameters 
+## Parameters
 
 ### Global parameters
 
@@ -68,7 +72,7 @@ See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command docu
 
 ### GraphQL Engine
 
-See all configurable options at the [GraphQL Engine helm chart](../graphql-engine). 
+See all configurable options at the [GraphQL Engine helm chart](../graphql-engine).
 
 | Name                     | Description                          | Value  |
 | ------------------------ | ------------------------------------ | ------ |
@@ -76,19 +80,19 @@ See all configurable options at the [GraphQL Engine helm chart](../graphql-engin
 
 ### GraphQL Data Connector
 
-See all configurable options at the [GraphQL Data Connector helm chart](../graphql-data-connector). 
+See all configurable options at the [GraphQL Data Connector helm chart](../graphql-data-connector).
 
 ### Mongo Data Connector
 
-See all configurable options at the [Mongo Data Connector helm chart](../mongo-data-connector). 
+See all configurable options at the [Mongo Data Connector helm chart](../mongo-data-connector).
 
 ### Redis
 
-See all configurable options at the [Redis helm chart](https://github.com/bitnami/charts/tree/main/bitnami/redis). 
+See all configurable options at the [Redis helm chart](https://github.com/bitnami/charts/tree/main/bitnami/redis).
 
 ### Dex
 
-See all configurable options at the [Dex helm chart](https://github.com/dexidp/helm-charts/tree/master/charts/dex). 
+See all configurable options at the [Dex helm chart](https://github.com/dexidp/helm-charts/tree/master/charts/dex).
 
 | Name          | Description               | Value   |
 | ------------- | ------------------------- | ------- |
@@ -96,7 +100,7 @@ See all configurable options at the [Dex helm chart](https://github.com/dexidp/h
 
 ### Kube Prometheus Stack
 
-See all configurable options at the [Kube Prometheus Stack helm chart](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml). 
+See all configurable options at the [Kube Prometheus Stack helm chart](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml).
 
 Pre-built Grafana Dashboards for GraphQL Engine are configured by default.
 
@@ -106,7 +110,7 @@ Pre-built Grafana Dashboards for GraphQL Engine are configured by default.
 
 ### Jaeger
 
-See all configurable options at the [Jaeger helm chart](https://github.com/jaegertracing/helm-charts). 
+See all configurable options at the [Jaeger helm chart](https://github.com/jaegertracing/helm-charts).
 
 | Name              | Description | Value |
 | ----------------- | ----------- | ----- |
