@@ -220,6 +220,7 @@ service:
   annotations: {}
   labels: {}
   type: ClusterIP
+  ## nodePort: 30020
 
 ## Ingress configuration for graphql-engine service
 ## ref https://kubernetes.io/docs/concepts/services-networking/ingress
