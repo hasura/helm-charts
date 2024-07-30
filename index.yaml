@@ -4,6 +4,18 @@ entries:
   - annotations:
       artifacthub.io/changes: ""
     apiVersion: v2
+    appVersion: 2.41.0
+    created: "2024-07-30T17:07:46.391347683Z"
+    description: An Helm chart for GraphQL Data Connector in Kubernetes
+    digest: 348be100e1ab08f0d0748084818a2ab63a19d29d512598ba4a9f68f765190271
+    name: graphql-data-connector
+    type: application
+    urls:
+    - https://github.com/hasura/helm-charts/releases/download/graphql-data-connector@0.6.0/graphql-data-connector-0.6.0.tgz
+    version: 0.6.0
+  - annotations:
+      artifacthub.io/changes: ""
+    apiVersion: v2
     appVersion: 2.38.1
     created: "2024-04-10T03:14:49.68319217Z"
     description: An Helm chart for GraphQL Data Connector in Kubernetes
@@ -108,6 +120,23 @@ entries:
     - https://github.com/hasura/helm-charts/releases/download/graphql-data-connector@0.0.1/graphql-data-connector-0.0.1.tgz
     version: 0.0.1
   graphql-engine:
+  - annotations:
+      artifacthub.io/changes: ""
+    apiVersion: v2
+    appVersion: 2.41.0
+    created: "2024-07-30T17:07:46.512936184Z"
+    dependencies:
+    - condition: postgres.enabled
+      name: postgres
+      repository: file://../postgres
+      version: 0.2.0
+    description: An Helm chart for Hasura GraphQL Engine in Kubernetes
+    digest: 7f9f6d6b2bcfd3f7470891c54e25bd35816f3d2e71887bdf3433ea69d43f002b
+    name: graphql-engine
+    type: application
+    urls:
+    - https://github.com/hasura/helm-charts/releases/download/graphql-engine@0.6.0/graphql-engine-0.6.0.tgz
+    version: 0.6.0
   - annotations:
       artifacthub.io/changes: ""
     apiVersion: v2
@@ -260,6 +289,48 @@ entries:
     - https://github.com/hasura/helm-charts/releases/download/graphql-engine@0.0.1/graphql-engine-0.0.1.tgz
     version: 0.0.1
   hasura-enterprise-stack:
+  - annotations:
+      artifacthub.io/changes: ""
+    apiVersion: v2
+    appVersion: 2.41.0
+    created: "2024-07-30T17:07:46.700650397Z"
+    dependencies:
+    - condition: graphql-engine.enabled
+      name: graphql-engine
+      repository: file://../graphql-engine
+      version: 0.6.0
+    - condition: global.connector.graphql.enabled
+      name: graphql-data-connector
+      repository: file://../graphql-data-connector
+      version: 0.6.0
+    - condition: global.connector.mongo.enabled
+      name: mongo-data-connector
+      repository: file://../mongo-data-connector
+      version: 0.6.0
+    - condition: global.redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 17.15.2
+    - condition: dex.enabled
+      name: dex
+      repository: https://charts.dexidp.io
+      version: 0.17.1
+    - condition: kube-prometheus-stack.enabled
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 48.6.0
+    - condition: jaeger.enabled
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.71.18
+    description: An Helm chart for the complete end-to-end Hasura GraphQL Engine Enterprise
+      ecosystem solution in Kubernetes
+    digest: bc51b3e1717cb82200a93e3d50b9fb0690890b5e71539d21b7d47683fe52599d
+    name: hasura-enterprise-stack
+    type: application
+    urls:
+    - https://github.com/hasura/helm-charts/releases/download/hasura-enterprise-stack@0.6.0/hasura-enterprise-stack-0.6.0.tgz
+    version: 0.6.0
   - annotations:
       artifacthub.io/changes: ""
     apiVersion: v2
@@ -640,6 +711,18 @@ entries:
   - annotations:
       artifacthub.io/changes: ""
     apiVersion: v2
+    appVersion: 2.41.0
+    created: "2024-07-30T17:07:46.794414183Z"
+    description: An Helm chart for Mongo Data Connector in Kubernetes
+    digest: 885fc41b72322ec91cabe10692f752111c7c00d20b333b3c899e1142b84fb8b8
+    name: mongo-data-connector
+    type: application
+    urls:
+    - https://github.com/hasura/helm-charts/releases/download/mongo-data-connector@0.6.0/mongo-data-connector-0.6.0.tgz
+    version: 0.6.0
+  - annotations:
+      artifacthub.io/changes: ""
+    apiVersion: v2
     appVersion: 2.38.1
     created: "2024-04-10T03:14:50.291710927Z"
     description: An Helm chart for Mongo Data Connector in Kubernetes
@@ -800,4 +883,4 @@ entries:
     urls:
     - https://github.com/hasura/helm-charts/releases/download/postgres@0.0.1/postgres-0.0.1.tgz
     version: 0.0.1
-generated: "2024-04-10T03:14:50.291874682Z"
+generated: "2024-07-30T17:07:46.794613227Z"
