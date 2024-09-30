@@ -29,9 +29,6 @@ spec:
   template:
     metadata:
       annotations:
-      {{- if not .Values.disableAnnotationTimestamp }}
-        deployment-timestamp: "{{ date "20060102150405" now }}"
-      {{- end }}
       {{- if .Values.annotations }}
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}

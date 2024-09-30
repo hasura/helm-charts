@@ -42,7 +42,7 @@
 {{- end }}
 
 {{- define "common.secretsName" -}}
-{{- $secretName := coalesce (.Values.secret).name (.Values.secrets).name -}}
+{{- $secretName := (.Values.secret).name -}}
 {{- if $secretName -}}
   {{- print $secretName }}
 {{- else -}}
