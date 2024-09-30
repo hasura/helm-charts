@@ -7,7 +7,7 @@ This chart deploys the GraphQL Engine service with a Postgres instance for metad
 1. Kubernetes 1.16+
 2. Helm (preferably v3) installed – instructions are [here](https://helm.sh/docs/intro/install/).
 3. Hasura helm repo configured.
-  
+
 ```bash
 helm repo add hasura https://hasura.github.io/helm-charts
 helm repo update
@@ -22,13 +22,14 @@ helm repo update
 ```bash
 helm install [RELEASE_NAME] hasura/graphql-engine
 ```
+
 See [configuration](#parameters) below.
 
 See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation.
 
 ### Configuration Examples
 
-See configuration examples [here](./examples). 
+See configuration examples [here](./examples).
 
 ### Uninstall Helm Chart
 
@@ -40,7 +41,7 @@ This removes all the Kubernetes components associated with the chart and deletes
 
 See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation.
 
-## Parameters 
+## Parameters
 
 ### Global parameters
 
@@ -56,7 +57,6 @@ See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command docu
 | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------- |
 | `nameOverride`                                    | String to override the deployment name                                                                    | `""`                    |
 | `namespaceOverride`                               | String to override the namespace                                                                          | `""`                    |
-| `disableAnnotationTimestamp`                      | Disable the current timestamp annotation that force the pod to roll out                                   | `true`                  |
 | `labels`                                          | Add labels to the deployment resource                                                                     | `{}`                    |
 | `annotations`                                     | Add annotations to the deployment resource                                                                | `{}`                    |
 | `command`                                         | Customize the execution command                                                                           | `[]`                    |
@@ -154,7 +154,7 @@ See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command docu
 
 ### Postgres parameters
 
-See the [PostgreSQL helm chart](../postgres) for full list of parameters. 
+See the [PostgreSQL helm chart](../postgres) for full list of parameters.
 
 | Name               | Description                      | Value  |
 | ------------------ | -------------------------------- | ------ |
@@ -167,4 +167,3 @@ See the [PostgreSQL helm chart](../postgres) for full list of parameters.
 | `podMonitor.enabled`       | Enable the Prometheus PodMonitor resource. Require [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) to be installed | `false` |
 | `podMonitor.interval`      | The monitor scrape interval                                                                                                                          | `15s`   |
 | `podMonitor.scrapeTimeout` | The monitor scrape timeout                                                                                                                           | `10s`   |
-

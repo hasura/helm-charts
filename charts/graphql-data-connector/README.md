@@ -6,7 +6,7 @@ This chart deploys the GraphQL Data Connector service.
 
 1. Helm (preferably v3) installed – instructions are [here](https://helm.sh/docs/intro/install/).
 2. Hasura helm repo configured.
-  
+
 ```bash
 helm repo add hasura https://hasura.github.io/helm-charts
 helm repo update
@@ -19,11 +19,12 @@ helm repo update
 ```bash
 helm install [RELEASE_NAME] hasura/graphql-data-connector
 ```
+
 See [configuration](#parameters) below.
 
 See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation.
 
-## Parameters 
+## Parameters
 
 | Name                                              | Description                                                                                                | Value                           |
 | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------- |
@@ -32,7 +33,6 @@ See [helm install](https://helm.sh/docs/helm/helm_install/) for command document
 | `global.prefixOverride`                           | Override the naming prefix instead of the release name                                                     | `{{ .Release.Name }}`           |
 | `nameOverride`                                    | String to override the deployment name                                                                     | `""`                            |
 | `namespaceOverride`                               | String to override the namespace                                                                           | `""`                            |
-| `disableAnnotationTimestamp`                      | Disable the current timestamp annotation that force the pod to roll out                                    | `true`                          |
 | `labels`                                          | Add labels to the deployment resource                                                                      | `{}`                            |
 | `annotations`                                     | Add annotations to the deployment resource                                                                 | `{}`                            |
 | `command`                                         | Customize the execution command                                                                            | `[]`                            |
