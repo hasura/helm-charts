@@ -29,9 +29,10 @@ spec:
   template:
     metadata:
       annotations:
-      {{- if not .Values.disableAnnotationTimestamp }}
-        deployment-timestamp: "{{ date "20060102150405" now }}"
+      {{- if or .Values.secret.enabled .Values.postgres.enabled }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       {{- end }}
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       {{- if .Values.annotations }}
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}

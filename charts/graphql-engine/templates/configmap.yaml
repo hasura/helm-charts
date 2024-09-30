@@ -8,10 +8,6 @@ kind: ConfigMap
 metadata:
   name: {{ template "common.configMapName" $ }}
   namespace: {{ template "common.namespace" $ }}
-  annotations:
-  {{- if not $.Values.disableAnnotationTimestamp }}
-    deployment-timestamp: "{{ date "20060102150405" now }}"
-  {{- end }}
 data:
   HASURA_GRAPHQL_ENABLE_CONSOLE: {{ coalesce .enableConsole false | quote }}
 {{- range $key, $value := (coalesce .extraConfigs .additionalConfigs) }}
