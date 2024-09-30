@@ -1,24 +1,24 @@
 The changelog is automatically generated using [git-chglog](https://github.com/git-chglog/git-chglog) and it follows [Keep a Changelog](https://keepachangelog.com) format.
 
 
+<a name="graphql-engine@0.7.0"></a>
+## [graphql-engine@0.7.0] - 2024-09-30
+- fix: deployment graphql-engine checksum annotations ([#25](https://github.com/hasura/helm-charts/issues/25))
+
 <a name="graphql-engine@0.6.0"></a>
 ## [graphql-engine@0.6.0] - 2024-07-31
-- feat: update hasura dependencies to v2.41.0
-- feat: add nodePort configuration by @jennydaman in https://github.com/hasura/helm-charts/pull/22
 
 <a name="graphql-engine@0.5.0"></a>
 ## [graphql-engine@0.5.0] - 2024-04-10
-- feat: update hasura dependencies to v2.38.1 
-- feat: add service account template ([#19](https://github.com/hasura/helm-charts/pull/19))
 
 <a name="graphql-engine@0.4.0"></a>
 ## [graphql-engine@0.4.0] - 2024-02-26
-- feat: update hasura dependencies to v2.37.0 ([#15](https://github.com/hasura/helm-charts/pull/15))
+- feat: update hasura dependencies to v2.37.0 ([#15](https://github.com/hasura/helm-charts/issues/15))
 
 <a name="graphql-engine@0.3.0"></a>
 ## [graphql-engine@0.3.0] - 2023-11-09
-- feat: update hasura dependencies to v2.35.1 (#11)
-- feat: add topology spread constraints (#10)
+- feat: update hasura dependencies to v2.35.1 ([#11](https://github.com/hasura/helm-charts/issues/11))
+- feat: add topology spread constraints ([#10](https://github.com/hasura/helm-charts/issues/10))
 
 <a name="graphql-engine@0.2.1"></a>
 ## [graphql-engine@0.2.1] - 2023-10-27
