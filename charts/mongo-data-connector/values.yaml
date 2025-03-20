@@ -27,7 +27,7 @@ labels: {}
 ##
 image:
   repository: hasura/mongo-data-connector
-  tag: v2.41.0
+  tag: v2.46.0
   ## Specify a imagePullPolicy
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##

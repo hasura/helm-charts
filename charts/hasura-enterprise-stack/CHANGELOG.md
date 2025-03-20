@@ -1,6 +1,10 @@
 The changelog is automatically generated using [git-chglog](https://github.com/git-chglog/git-chglog) and it follows [Keep a Changelog](https://keepachangelog.com) format.
 
 
+<a name="hasura-enterprise-stack@0.8.0"></a>
+## [hasura-enterprise-stack@0.8.0] - 2025-03-21
+- feat: update hasura dependencies to v2.46.0, Dex helm chart to v0.22.1, and Jaeger helm chart to v2.1.0.
+
 <a name="hasura-enterprise-stack@0.7.0"></a>
 ## [hasura-enterprise-stack@0.7.0] - 2024-09-30
 
