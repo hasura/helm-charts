@@ -25,7 +25,9 @@ spec:
   strategy:
     {{- toYaml .Values.strategy | nindent 4 }}
 {{- end }}
+{{- if not .Values.autoscaling.enabled -}}
   replicas: {{ .Values.replicas }}
+{{- end }}
   template:
     metadata:
       annotations:
