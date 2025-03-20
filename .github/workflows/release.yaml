@@ -1,4 +1,4 @@
-name: Release Charts 
+name: Release Charts
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Get list of changed charts
         id: list-changed-charts
-        uses: tj-actions/changed-files@v42
+        uses: tj-actions/changed-files@v46
         with:
           base_sha: ${{ github.event.inputs.base-branch }}
           files: charts/*/Chart.yaml
@@ -140,7 +140,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v4.0.0
+        uses: azure/setup-helm@v4
 
       - name: Add dependencies
         run: |
@@ -149,7 +149,7 @@ jobs:
           helm repo add jaeger https://jaegertracing.github.io/helm-charts
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
+        uses: helm/chart-releaser-action@v1
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
