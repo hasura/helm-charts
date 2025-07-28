@@ -279,7 +279,10 @@ spec:
           {{- if .Values.extraEnvsTpl }}
             {{- tpl .Values.extraEnvsTpl $ | nindent 12 }}
           {{- end }}
-          
+          {{- with .Values.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
         {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
