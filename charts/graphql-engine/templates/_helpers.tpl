@@ -52,7 +52,7 @@
 
 
 {{- define "postgres.name" -}}
-  {{- if .Values.postgres.nameOverride  -}}
+  {{- if (.Values.postgres).nameOverride  -}}
     {{- print .Values.postgres.nameOverride -}}
   {{- else -}}
     {{- printf "%s-postgres" (include "common.prefix" .) -}}
