@@ -210,8 +210,8 @@ extraEnvs: []
 ##
 extraEnvsTpl: ""
 
-## Allows you to set environment variables for a container by referencing either a ConfigMap or a Secret. 
-## When you use envFrom, all the key-value pairs in the referenced ConfigMap or Secret are set as environment variables for the container. 
+## Allows you to set environment variables for a container by referencing either a ConfigMap or a Secret.
+## When you use envFrom, all the key-value pairs in the referenced ConfigMap or Secret are set as environment variables for the container.
 ## You can also specify a common prefix string.
 ##
 envFrom: []

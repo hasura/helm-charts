@@ -49,7 +49,7 @@ spec:
         {{- if and .persistence.enabled .persistence.existingClaim }}
           persistentVolumeClaim:
             claimName: {{ .persistence.existingClaim }}
-        {{- else if and .persistence.enabled }}  
+        {{- else if and .persistence.enabled }}
           persistentVolumeClaim:
             claimName: {{ $appName }}-data
         {{- else }}
@@ -103,7 +103,7 @@ spec:
           livenessProbe:
           {{- toYaml  .healthChecks.livenessProbe | nindent 12 }}
        {{- end }}
-          volumeMounts:       
+          volumeMounts:
             - name: postgres-data
               mountPath: "/var/lib/postgresql/data"
           {{- if (.initdb).scripts }}

@@ -29,16 +29,16 @@ spec:
   resources:
     requests:
       storage: {{ .size | quote }}
-  {{- if .storageClass }}        
+  {{- if .storageClass }}
   storageClassName: {{ .storageClass | quote }}
-  {{- end }}  
+  {{- end }}
   {{- if .dataSource }}
-  dataSource: 
+  dataSource:
     {{- toYaml .dataSource | nindent 4 }}
-  {{- end }}  
+  {{- end }}
   {{- if .selector }}
-  selector: 
+  selector:
     {{- toYaml .selector | nindent 4 }}
   {{- end }}
-{{- end }}  
+{{- end }}
 {{- end }}

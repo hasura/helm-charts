@@ -10,6 +10,6 @@ metadata:
   namespace: {{ template "common.namespace" . }}
   labels:
     app: {{ include "postgres.name" . }}
-data: 
+data:
   {{- toYaml .Values.initdb.scripts | nindent 2 }}
 {{- end }}

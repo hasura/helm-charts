@@ -123,7 +123,7 @@ kube-prometheus-stack:
               annotations:
                 title: "Unhealthy data source"
                 description: |
-                  {{ if eq $value 1.0 }} 
+                  {{ if eq $value 1.0 }}
                     Health check requests which are sent to your data source <b>{{ $labels.source_name }}</b> are timed out.
                   {{ else if eq $value 2.0 }}
                     Health check requests which are sent to your data source <b>{{ $labels.source_name }}</b> are failed due to bad configuration.
