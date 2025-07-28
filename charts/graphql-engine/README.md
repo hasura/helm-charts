@@ -77,6 +77,7 @@ See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command docu
 | `extraVolumeMounts`                               | Optionally specify extra list of additional volumeMounts for the GraphQL Data Connector container         | `[]`                    |
 | `extraEnvs`                                       | Optionally specify extra list of additional environment variables for the pod                             | `[]`                    |
 | `extraEnvsTpl`                                    | Optionally specify extra list of additional environment variables for the pod, using text template        | `""`                    |
+| `envFrom`                                         | Allows you to set environment variables for a container by referencing either a ConfigMap or a Secret     | `[]`                    |
 | `resources`                                       | Resource requests and limits of GraphQL Data Connector container                                          | `{}`                    |
 | `serviceAccount.enabled`                          | Enable ServiceAccount for GraphQL Data Connector pod                                                      | `false`                 |
 | `serviceAccount.name`                             | The name of the ServiceAccount to use                                                                     | `""`                    |

@@ -27,7 +27,7 @@ labels: {}
 ##
 image:
   repository: hasura/mongo-data-connector
-  tag: v2.46.0
+  tag: v2.48.3
   ## Specify a imagePullPolicy
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
@@ -126,6 +126,10 @@ initContainers: []
 ##
 extraContainers: []
 
+## Optionally specify extra list of additional volumes for the pod
+##
+extraVolumes: []
+
 ## Extra volume mounts
 ##
 extraVolumeMounts: []
@@ -187,6 +191,12 @@ resources: {}
 ## Additional environment variables for the deployment
 ##
 extraEnvs: []
+
+## Allows you to set environment variables for a container by referencing either a ConfigMap or a Secret. 
+## When you use envFrom, all the key-value pairs in the referenced ConfigMap or Secret are set as environment variables for the container. 
+## You can also specify a common prefix string.
+##
+envFrom: []
 
 ## Service configuration for mongo-data-connector service
 ##
