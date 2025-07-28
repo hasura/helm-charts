@@ -192,4 +192,4 @@ jobs:
 
           git commit -m "Update CHANGELOG for charts ${chart_names}"
           # Push changes to the main branch.
-          git push origin "${GITHUB_REF##*/}":main
+          git push origin main
