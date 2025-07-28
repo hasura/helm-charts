@@ -50,6 +50,15 @@
 {{- end -}}
 {{- end }}
 
+
+{{- define "postgres.name" -}}
+  {{- if .Values.postgres.nameOverride  -}}
+    {{- print .Values.postgres.nameOverride -}}
+  {{- else -}}
+    {{- printf "%s-postgres" (include "common.prefix" .) -}}
+  {{- end -}}
+{{- end }}
+
 {{- define "db.url" -}}
 {{- if (.Values.secret).metadataDbUrl -}}
   {{- print .Values.secret.metadataDbUrl -}}
