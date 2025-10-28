@@ -1,6 +1,10 @@
 The changelog is automatically generated using [git-chglog](https://github.com/git-chglog/git-chglog) and it follows [Keep a Changelog](https://keepachangelog.com) format.
 
 
+<a name="graphql-data-connector@0.9.1"></a>
+## [graphql-data-connector@0.9.1] - 2025-10-29
+- feat: update hasura dependencies to v2.48.6
+  
 <a name="graphql-data-connector@0.9.0"></a>
 ## [graphql-data-connector@0.9.0] - 2025-07-28
 - feat: update hasura dependencies to v2.48.3

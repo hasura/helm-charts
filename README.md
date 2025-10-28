@@ -1,6 +1,6 @@
 # Hasura Helm Charts
 
-This repository contains Helm charts to help with the deployment of Hasura GraphQL on Kubernetes. This project is currently in active development.
+This repository contains Helm charts to help with the deployment of Hasura GraphQL Engine v2 on Kubernetes. This project is currently in active development.
 
 ## Repository
 
