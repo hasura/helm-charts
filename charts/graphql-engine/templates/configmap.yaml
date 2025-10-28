@@ -9,7 +9,7 @@ metadata:
   name: {{ template "common.configMapName" $ }}
   namespace: {{ template "common.namespace" $ }}
 data:
-  HASURA_GRAPHQL_ENABLE_CONSOLE: {{ coalesce .enableConsole false | quote }}
+  HASURA_GRAPHQL_ENABLE_CONSOLE: {{ .enableConsole | quote }}
 {{- range $key, $value := (coalesce .extraConfigs .additionalConfigs) }}
   {{ $key }}: {{ $value | quote }}
 {{- end }}
