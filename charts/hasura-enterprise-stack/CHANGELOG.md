@@ -1,5 +1,10 @@
 The changelog is automatically generated using [git-chglog](https://github.com/git-chglog/git-chglog) and it follows [Keep a Changelog](https://keepachangelog.com) format.
 
+<a name="hasura-enterprise-stack@0.9.1"></a>
+## [hasura-enterprise-stack@0.9.1] - 2025-10-29
+- feat: update hasura dependencies to v2.48.6
+- fix: change the Redis image registry from Binami to the official Redis. The Bitnami team deleted all old images so the current image tag will fail to pull.
+  
 <a name="hasura-enterprise-stack@0.9.0"></a>
 ## [hasura-enterprise-stack@0.9.0] - 2025-07-28
 - feat: update hasura dependencies to v2.48.3

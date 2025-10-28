@@ -59,7 +59,11 @@ mongo-data-connector: {}
 ## Enable redis for GraphQL Engine's cache and rate limit
 ## see full values at https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
 ##
-redis: {}
+redis:
+  image:
+    registry: docker.io
+    repository: redis
+    tag: 7.2
 
 ## Dex is a middleware identity service for SSO login on console
 ## It is required if you want to connect with special authorization protocol ush as SAML, LDAP

@@ -136,22 +136,22 @@ See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command docu
 
 ### Secret parameters
 
-| Name                   | Description                                                                          | Value                                        |
-| ---------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------- |
-| `secret.enabled`       | Automatically generate a secret resource                                             | `true`                                       |
-| `secret.name`          | Optionally specify your secret name                                                  | `{{ .Release.Name }}-graphql-engine-secrets` |
-| `secret.eeLicenseKey`  | String to enable the Enterprise Edition with the license key (EE)                    | `""`                                         |
-| `secret.proKey`        | String to enable the Enterprise Classic edition (EE)                                 | `""`                                         |
-| `secret.metadataDbUrl` | The connection string to the metadata database                                       | `""`                                         |
-| `secret.adminSecret`   | The admin secret of GraphQL Engine                                                   | `""`                                         |
-| `secret.adminSecrets`  | Optionally specify a list of admin secrets (EE)                                      | `[]`                                         |
-| `secret.metricsSecret` | Prometheus metrics secret (EE)                                                       | `""`                                         |
-| `secret.jwtSecret`     | Specify the secret to enables Authentication using JWT                               | `""`                                         |
-| `secret.jwtSecrets`    | Optionally specify a list of secrets to enables Authentication using JWT (EE)        | `""`                                         |
-| `secret.redisUrl`      | The connection string to the redis database for caching (EE)                         | `""`                                         |
-| `secret.redisUrl`      | The connection string to the redis database for rate limit (EE)                      | `""`                                         |
-| `secret.ssoProviders`  | Optionally specify the list of Identity provider settings for console SSO login (EE) | `[]`                                         |
-| `secret.extraSecrets`  | Extra secrets data for graphql-engine environment variables (EE)                     | `{}`                                         |
+| Name                       | Description                                                                          | Value                                        |
+| -------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------- |
+| `secret.enabled`           | Automatically generate a secret resource                                             | `true`                                       |
+| `secret.name`              | Optionally specify your secret name                                                  | `{{ .Release.Name }}-graphql-engine-secrets` |
+| `secret.eeLicenseKey`      | String to enable the Enterprise Edition with the license key (EE)                    | `""`                                         |
+| `secret.proKey`            | String to enable the Enterprise Classic edition (EE)                                 | `""`                                         |
+| `secret.metadataDbUrl`     | The connection string to the metadata database                                       | `""`                                         |
+| `secret.adminSecret`       | The admin secret of GraphQL Engine                                                   | `""`                                         |
+| `secret.adminSecrets`      | Optionally specify a list of admin secrets (EE)                                      | `[]`                                         |
+| `secret.metricsSecret`     | Prometheus metrics secret (EE)                                                       | `""`                                         |
+| `secret.jwtSecret`         | Specify the secret to enables Authentication using JWT                               | `""`                                         |
+| `secret.jwtSecrets`        | Optionally specify a list of secrets to enables Authentication using JWT (EE)        | `""`                                         |
+| `secret.redisUrl`          | The connection string to the redis database for caching (EE)                         | `""`                                         |
+| `secret.rateLimitRedisUrl` | The connection string to the redis database for rate limit (EE)                      | `""`                                         |
+| `secret.ssoProviders`      | Optionally specify the list of Identity provider settings for console SSO login (EE) | `[]`                                         |
+| `secret.extraSecrets`      | Extra secrets data for graphql-engine environment variables (EE)                     | `{}`                                         |
 
 ### Postgres parameters
 

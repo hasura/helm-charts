@@ -20,14 +20,14 @@ jobs:
       modified-charts-files: ${{ steps.list-changed-charts.outputs.all_modified_files }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
 
       - name: Get list of changed charts
         id: list-changed-charts
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@v47
         with:
           base_sha: ${{ github.event.inputs.base-branch }}
           files: charts/*/Chart.yaml
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
@@ -106,7 +106,7 @@ jobs:
           done
 
       - name: Stash generated charts changelog files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: charts-generated-changelog
           path: |
@@ -123,7 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
@@ -152,44 +152,3 @@ jobs:
         uses: helm/chart-releaser-action@v1
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
-  commit-charts-changelog:
-    needs:
-      - find-charts-to-release
-      - release-charts
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.inputs.branch }}
-
-      - name: Unstash generated charts changelog files
-        uses: actions/download-artifact@v4
-        with:
-          name: charts-generated-changelog
-          path: charts
-
-      - name: Commit charts CHANGELOG.md file
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-
-          released_charts_files="${{ needs.find-charts-to-release.outputs.modified-charts-files }}"
-          echo "released_charts_files: ${released_charts_files}"
-
-          # Commit changes locally.
-          chart_names=""
-          for chart_file in ${released_charts_files}; do
-              chart_name=$(grep -Po "(?<=^name: ).+" ${chart_file})
-              chart_version=$(grep -Po "(?<=^version: ).+" ${chart_file})
-              chart_path="charts/${chart_name}"
-
-              git add ${chart_path}/CHANGELOG.md
-              chart_names="${chart_names} ${chart_name}:${chart_version}"
-          done
-
-          git commit -m "Update CHANGELOG for charts ${chart_names}"
-          # Push changes to the main branch.
-          git push origin main
